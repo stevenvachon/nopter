@@ -1,0 +1,39 @@
+{
+  "name": "nopter",
+  "description": "A simple nopt wrapper for CLI apps.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/stevenvachon/nopter",
+  "author": {
+    "name": "Steven Vachon",
+    "email": "contact@svachon.com",
+    "url": "http://www.svachon.com/"
+  },
+  "main": "lib",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stevenvachon/nopter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stevenvachon/nopter/issues"
+  },
+  "dependencies": {
+    "cli-table": "~0.3",
+    "colors": "~0.6",
+    "nopt": "~2.2"
+  },
+  "devDependencies": {
+    "chai": "~1.9",
+    "mocha": "~1.18",
+    "strip-ansi": "~0.2"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha test/ --bail --reporter spec --check-leaks"
+  },
+  "keywords": [
+    "nopt",
+    "cli"
+  ]
+}

@@ -1,0 +1,17 @@
+Test App: Testing nopter. (v0.0.0)
+
+Usage
+  testapp [OPTIONS] [ARGS]
+                 
+Options          
+  --help, -h, -?  Display this help text.    
+  --input, -i     Some file input.           
+  --output, -o    Some file output.          
+  --testpath, -p  For testing.               
+  --testurl, -u   For testing.               
+  --version, -v   Print the testapp version. 
+                 
+Arguments        
+  INPUT           Alias to --input           
+  OUTPUT          Alias to --output          
+
