@@ -23,13 +23,18 @@ nopter.config(
 		"input":
 		{
 			short: "i",
-			info: "Some file input.",
+			info: "Some input file.",
 			type: path
+		},
+		"inputs":
+		{
+			info: "Some input files.",
+			type: [Array,path]
 		},
 		"output":
 		{
 			short: "o",
-			info: "Some file output.",
+			info: "Some output file.",
 			type: path
 		},
 		"testpath":
@@ -42,7 +47,8 @@ nopter.config(
 		{
 			short: "u",
 			info: "For testing.",
-			type: url
+			type: url,
+			default: "http://google.com"
 		},
 		"version":
 		{

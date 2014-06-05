@@ -5,8 +5,9 @@ Usage
                  
 Options          
   --help, -h, -?  Display this help text.    
-  --input, -i     Some file input.           
-  --output, -o    Some file output.          
+  --input, -i     Some input file.           
+  --inputs        Some input files.          
+  --output, -o    Some output file.          
   --testpath, -p  For testing.               
   --testurl, -u   For testing.               
   --version, -v   Print the testapp version. 

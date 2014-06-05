@@ -9,6 +9,8 @@ Features:
 * Argument aliases
 * Built-in help screen
 
+![Compile example](https://raw.github.com/stevenvachon/nopter/master/misc/help-screen.png)
+
 ## Getting Started
 
 This utility requires [Node.js](http://nodejs.org/) `~0.10`. To install, type this at the command line:
@@ -89,12 +91,15 @@ options: {
 	"path": {
 		short: "p",
 		info: "Some file/directory.",
-		type: require("path")
+		type: require("path"),
+		default: "/path/to/file"
 	}
 }
 ```
-`options.short` can be a `String` or an `Array`.  
-`options.type` can be any of [these types](https://github.com/npm/nopt#types).
+`options.default` is optional and can be anything. Undefined options are simply `undefined`.  
+`options.info` is required and should be a `String`.  
+`options.short` is optional and can be a `String` or an `Array`.  
+`options.type` is required and can be any of [these types](https://github.com/npm/nopt#types).
 
 #### config.aliases
 Type: `Array`  
@@ -123,12 +128,17 @@ nopter.config({
 			type: Boolean
 		},
 		"input": {
-			info: "Some file input.",
-			type: path
+			info: "Some input files.",
+			type: [Array,path]
 		},
 		"output": {
-			info: "Some file output.",
+			info: "Some output file.",
 			type: path
+		},
+		"quality": {
+			info: "Image compression (0–100, default=80).",
+			type: Number,
+			default: 80
 		}
 	},
 	aliases: ["input", "output"]
@@ -143,11 +153,11 @@ function cli() {
 }
 
 module.exports = cli;
-
 ```
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Release History
+* 0.1.2 added default values, help screen cleanup
 * 0.1.1 added custom error messages
 * 0.1.0 initial release
 

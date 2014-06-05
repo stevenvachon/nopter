@@ -4,7 +4,7 @@ var nopter = require("../../lib");
 
 nopter.config(
 {
-	title:       "Test App",
+	title:   "Test App",
 	aliases: ["input", "output"]
 });
 

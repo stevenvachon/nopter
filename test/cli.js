@@ -14,11 +14,8 @@ describe("Command line app", function()
 			{
 				var result = JSON.parse(stdout);
 				
-				expect(result.input).to.be.a("string");
-				expect(result.input).to.have.length.of.at.least(3);	// catch files of only a line break or two
-				
-				expect(result.output).to.be.a("string");
-				expect(result.output).to.have.length.of.at.least(3);
+				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");
 				
 				done();
 			});
@@ -32,11 +29,8 @@ describe("Command line app", function()
 			{
 				var result = JSON.parse(stdout);
 				
-				expect(result.input).to.be.a("string");
-				expect(result.input).to.have.length.of.at.least(1);
-				
-				expect(result.output).to.be.a("string");
-				expect(result.output).to.have.length.of.at.least(1);
+				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");
 				
 				done();
 			});
@@ -50,11 +44,8 @@ describe("Command line app", function()
 			{
 				var result = JSON.parse(stdout);
 				
-				expect(result.input).to.be.a("string");
-				expect(result.input).to.have.length.of.at.least(1);
-				
-				expect(result.output).to.be.a("string");
-				expect(result.output).to.have.length.of.at.least(1);
+				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");
 				
 				done();
 			});
@@ -68,11 +59,8 @@ describe("Command line app", function()
 			{
 				/*var result = JSON.parse(stdout);
 				
-				expect(result.input).to.be.a("string");
-				expect(result.input).to.have.length.of.at.least(1);
-				
-				expect(result.output).to.be.a("string");
-				expect(result.output).to.have.length.of.at.least(1);*/
+				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");*/
 				
 				done();
 			});
@@ -86,11 +74,55 @@ describe("Command line app", function()
 			{
 				/*var result = JSON.parse(stdout);
 				
-				expect(result.input).to.be.a("string");
-				expect(result.input).to.have.length.of.at.least(1);
+				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");*/
 				
-				expect(result.output).to.be.a("string");
-				expect(result.output).to.have.length.of.at.least(1);*/
+				done();
+			});
+		});
+		
+		
+		
+		it("should support array options", function(done)
+		{
+			util.shell("meta/app", ["--inputs","folder/file.ext", "--inputs","folder/file.ext"], function(error, stdout, stderr)
+			{
+				var result = JSON.parse(stdout);
+				
+				result.inputs.forEach( function(value, i)
+				{
+					result.inputs[i] = util.stripCwd(value);
+				});
+				
+				expect(result.inputs).to.deep.equal( ["folder/file.ext","folder/file.ext"] );
+				
+				done();
+			});
+		});
+		
+		
+		
+		it("should support default values", function(done)
+		{
+			util.shell("meta/app", ["-u"], function(error, stdout, stderr)
+			{
+				var result = JSON.parse(stdout);
+				
+				expect(result.testurl).to.equal("http://google.com/");
+				
+				done();
+			});
+		});
+		
+		
+		
+		it("should support overriden default values", function(done)
+		{
+			util.shell("meta/app", ["-u","http://asdf.com"], function(error, stdout, stderr)
+			{
+				var result = JSON.parse(stdout);
+				
+				expect(result.testurl).to.equal("http://asdf.com/");
 				
 				done();
 			});

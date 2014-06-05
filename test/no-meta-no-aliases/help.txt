@@ -1,7 +1,7 @@
 NONAME (v0.0.0)
 
 Usage
-  noname [OPTIONS] [ARGS]
+  noname [OPTIONS]
                  
 Options          
   --help, -h, -?  Display this help text. 

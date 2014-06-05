@@ -4,7 +4,7 @@ var stripAnsi = require("strip-ansi");
 
 
 
-describe.only("Error messages", function()
+describe("Error messages", function()
 {
 	describe("as objects", function()
 	{
