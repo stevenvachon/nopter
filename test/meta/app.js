@@ -1,17 +1,17 @@
 var path = require("path");
 var url  = require("url");
 
-var nopter  = require("../../lib");
-var package = require("./package.json");
+var nopter = require("../../lib");
+var pkg    = require("./package.json");
 
 
 
 nopter.config(
 {
 	title:       "Test App",
-	name:        package.name,
-	description: package.description,
-	version:     package.version,
+	name:        pkg.name,
+	description: pkg.description,
+	version:     pkg.version,
 	options:
 	{
 		"help":
@@ -47,7 +47,7 @@ nopter.config(
 		"version":
 		{
 			short: "v",
-			info: "Print the testapp version.",
+			info: "Print the "+pkg.name+" version.",
 			type: Boolean
 		}
 	},

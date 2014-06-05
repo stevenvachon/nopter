@@ -4,7 +4,7 @@ var util      = require("./util");
 
 
 
-describe("CLI app", function()
+describe("Command line app", function()
 {
 	describe("with meta", function()
 	{

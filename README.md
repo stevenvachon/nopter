@@ -21,6 +21,29 @@ npm install nopter --save-dev
 #### config
 Gets or sets the [configuration](#Configuration).
 
+#### error.fatal
+Gets a (red) colored error message with a default "Error" prefix, but does not display/log it.
+```js
+nopter.error.fatal(error, additional, prefix);
+```
+`error` can be `Error` or `String`. If an `Error`, `error.name` will override the default `prefix`.  
+`additional` [optional] is a second uncolored sentence.  
+`prefix` [optional] overrides the default.
+
+#### error.notice
+Gets an uncolored error message with a default "Notice" prefix, but does not display/log it.
+```js
+nopter.error.notice(error, additional, prefix);
+```
+See [error.fatal](#errorfatal) for arguments info.
+
+#### error.warn
+Gets a (yellow) colored error message with a default "Warning" prefix, but does not display/log it.
+```js
+nopter.error.warn(error, additional, prefix);
+```
+See [error.fatal](#errorfatal) for arguments info.
+
 #### help
 Gets the help screen, but does not display/log it.
 
@@ -84,15 +107,15 @@ This would allow something like `app foo bar` to be a CLI shortcut to `app --opt
 
 ### Example
 ```js
-var nopter  = require("nopter");
-var package = require("./package.json");
-var path    = require("path");
+var nopter = require("nopter");
+var path   = require("path");
+var pkg    = require("./package.json");
 
 nopter.config({
 	title:       "Test App",
-	name:        package.name,
-	description: package.description,
-	version:     package.version,
+	name:        pkg.name,
+	description: pkg.description,
+	version:     pkg.version,
 	options: {
 		"help": {
 			short: ["h","?"],
@@ -106,7 +129,7 @@ nopter.config({
 		"output": {
 			info: "Some file output.",
 			type: path
-		},
+		}
 	},
 	aliases: ["input", "output"]
 });
@@ -114,6 +137,8 @@ nopter.config({
 function cli() {
 	if (nopter.input().help) {
 		console.log( nopter.help() );
+	} else {
+		console.log( nopter.error.warn("Message","Use --help") );
 	}
 }
 
@@ -123,6 +148,7 @@ module.exports = cli;
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Release History
+* 0.1.1 added custom error messages
 * 0.1.0 initial release
 
 ---

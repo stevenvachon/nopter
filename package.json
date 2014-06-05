@@ -1,7 +1,7 @@
 {
   "name": "nopter",
   "description": "A simple nopt wrapper for CLI apps.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/stevenvachon/nopter",
   "author": {
     "name": "Steven Vachon",
