@@ -20,6 +20,12 @@ nopter.config(
 			info: "Display this help text.",
 			type: Boolean
 		},
+		"hidden":
+		{
+			short: "h",
+			info: "A hidden option.",
+			hidden: true
+		},
 		"input":
 		{
 			short: "i",

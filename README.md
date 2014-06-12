@@ -92,11 +92,13 @@ options: {
 		short: "p",
 		info: "Some file/directory.",
 		type: require("path"),
-		default: "/path/to/file"
+		default: "/path/to/file",
+		hidden: true
 	}
 }
 ```
 `options.default` is optional and can be anything. Undefined options are simply `undefined`.  
+`options.hidden` is an optional `Boolean` that hides the option in the help screen.  
 `options.info` is required and should be a `String`.  
 `options.short` is optional and can be a `String` or an `Array`.  
 `options.type` is required and can be any of [these types](https://github.com/npm/nopt#types).
@@ -157,6 +159,7 @@ module.exports = cli;
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Release History
+* 0.1.3 added hidden options
 * 0.1.2 added default values, help screen cleanup
 * 0.1.1 added custom error messages
 * 0.1.0 initial release

@@ -102,9 +102,23 @@ describe("Command line app", function()
 		
 		
 		
-		it("should support default values", function(done)
+		it("should support default values with defined option", function(done)
 		{
 			util.shell("meta/app", ["-u"], function(error, stdout, stderr)
+			{
+				var result = JSON.parse(stdout);
+				
+				expect(result.testurl).to.equal("http://google.com/");
+				
+				done();
+			});
+		});
+		
+		
+		
+		it("should support default values with non-defined option", function(done)
+		{
+			util.shell("meta/app", [], function(error, stdout, stderr)
 			{
 				var result = JSON.parse(stdout);
 				
