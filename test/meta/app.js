@@ -37,6 +37,13 @@ nopter.config(
 			info: "Some input files.",
 			type: [Array,path]
 		},
+		"minify-abbr":
+		{
+			rename: "minifyABBR",
+			short: "m",
+			info: "Some minifier.",
+			type: Boolean
+		},
 		"output":
 		{
 			short: "o",

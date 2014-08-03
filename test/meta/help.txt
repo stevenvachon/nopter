@@ -2,17 +2,18 @@ Test App: Testing nopter. (v0.0.0)
 
 Usage
   testapp [OPTIONS] [ARGS]
-                 
-Options          
-  --help, -h, -?  Display this help text.    
-  --input, -i     Some input file.           
-  --inputs        Some input files.          
-  --output, -o    Some output file.          
-  --testpath, -p  For testing.               
-  --testurl, -u   For testing.               
-  --version, -v   Print the testapp version. 
-                 
-Arguments        
-  INPUT           Alias to --input           
-  OUTPUT          Alias to --output          
+                    
+Options             
+  --help, -h, -?     Display this help text.    
+  --input, -i        Some input file.           
+  --inputs           Some input files.          
+  --minify-abbr, -m  Some minifier.             
+  --output, -o       Some output file.          
+  --testpath, -p     For testing.               
+  --testurl, -u      For testing.               
+  --version, -v      Print the testapp version. 
+                    
+Arguments           
+  INPUT              Alias to --input           
+  OUTPUT             Alias to --output          
 

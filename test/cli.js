@@ -38,6 +38,21 @@ describe("Command line app", function()
 		
 		
 		
+		it("should support renamed options", function(done)
+		{
+			util.shell("meta/app", ["-m"], function(error, stdout, stderr)
+			{
+				var result = JSON.parse(stdout);
+				
+				expect( result["--minify-abbr"] ).to.be.undefined;
+				expect(result.minifyABBR).to.be.true;
+				
+				done();
+			});
+		});
+		
+		
+		
 		it("should support aliased/argument options", function(done)
 		{
 			util.shell("meta/app", ["folder/file.ext", "folder/file.ext"], function(error, stdout, stderr)

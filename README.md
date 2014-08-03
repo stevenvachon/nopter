@@ -100,6 +100,7 @@ options: {
 `options.default` is optional and can be anything. Undefined options are simply `undefined`.  
 `options.hidden` is an optional `Boolean` that hides the option in the help screen.  
 `options.info` is required and should be a `String`.  
+`options.rename` is an optional `String` that renames the option for easier use.  
 `options.short` is optional and can be a `String` or an `Array`.  
 `options.type` is required and can be any of [these types](https://github.com/npm/nopt#types).
 
@@ -141,6 +142,11 @@ nopter.config({
 			info: "Image compression (0–100, default=80).",
 			type: Number,
 			default: 80
+		},
+		"special-cli": {
+			rename: "specialCLI",
+			info: "Does something special.",
+			type: String
 		}
 	},
 	aliases: ["input", "output"]
@@ -159,6 +165,7 @@ module.exports = cli;
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Release History
+* 0.1.4 added rename option
 * 0.1.3 added hidden options
 * 0.1.2 added default values, help screen cleanup
 * 0.1.1 added custom error messages
