@@ -18,7 +18,8 @@ nopter.config(
 		{
 			short: ["h","?"],
 			info: "Display this help text.",
-			type: Boolean
+			type: Boolean,
+			sort: "Toggles"
 		},
 		"hidden":
 		{
@@ -42,7 +43,8 @@ nopter.config(
 			rename: "minifyABBR",
 			short: "m",
 			info: "Some minifier.",
-			type: Boolean
+			type: Boolean,
+			sort: "Toggles"
 		},
 		"output":
 		{
@@ -67,7 +69,8 @@ nopter.config(
 		{
 			short: "v",
 			info: "Print the "+pkg.name+" version.",
-			type: Boolean
+			type: Boolean,
+			sort: "Toggles"
 		}
 	},
 	aliases: ["input", "output"]

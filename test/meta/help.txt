@@ -4,13 +4,15 @@ Usage
   testapp [OPTIONS] [ARGS]
                     
 Options             
-  --help, -h, -?     Display this help text.    
   --input, -i        Some input file.           
   --inputs           Some input files.          
-  --minify-abbr, -m  Some minifier.             
   --output, -o       Some output file.          
   --testpath, -p     For testing.               
   --testurl, -u      For testing.               
+                    
+Options (Toggles)   
+  --help, -h, -?     Display this help text.    
+  --minify-abbr, -m  Some minifier.             
   --version, -v      Print the testapp version. 
                     
 Arguments           

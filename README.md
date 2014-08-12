@@ -102,6 +102,7 @@ options: {
 `options.info` is required and should be a `String`.  
 `options.rename` is an optional `String` that renames the option for easier use.  
 `options.short` is optional and can be a `String` or an `Array`.  
+`options.sort` is an optional `String` for visual grouping on the help screen.  
 `options.type` is required and can be any of [these types](https://github.com/npm/nopt#types).
 
 #### config.aliases
@@ -165,6 +166,7 @@ module.exports = cli;
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Release History
+* 0.1.5 added sort option
 * 0.1.4 added rename option
 * 0.1.3 added hidden options
 * 0.1.2 added default values, help screen cleanup
