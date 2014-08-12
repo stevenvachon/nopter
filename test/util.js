@@ -1,6 +1,6 @@
 var child_process = require("child_process");
 var fs = require("fs");
-var path = require("path");
+var pathModule = require("path");
 
 
 
@@ -20,9 +20,23 @@ function shell(shellfile, args, callback)
 
 
 
-function stripCwd(filePath)
+function slashes(path)
 {
-	return path.relative(__dirname, filePath);
+	if (pathModule.sep == "/")
+	{
+		return path;
+	}
+	else
+	{
+		return path.replace(/\//g, pathModule.sep);
+	}
+}
+
+
+
+function stripCwd(path)
+{
+	return pathModule.relative(__dirname, path);
 }
 
 
@@ -31,5 +45,6 @@ module.exports =
 {
 	loadFile: loadFile,
 	shell:    shell,
+	slashes:  slashes,
 	stripCwd: stripCwd
 };

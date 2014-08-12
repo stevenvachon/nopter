@@ -1,13 +1,13 @@
-# nopter [![NPM Version](http://badge.fury.io/js/nopter.svg)](http://badge.fury.io/js/nopter) [![Build Status](https://secure.travis-ci.org/stevenvachon/nopter.svg)](http://travis-ci.org/stevenvachon/nopter) [![Dependency Status](https://david-dm.org/stevenvachon/nopter.svg)](https://david-dm.org/stevenvachon/nopter)
+# nopter [![NPM Version](http://badge.fury.io/js/nopter.svg)](http://badge.fury.io/js/nopter) [![Build Status](https://secure.travis-ci.org/stevenvachon/nopter.svg)](http://travis-ci.org/stevenvachon/nopter) [![Build status](https://ci.appveyor.com/api/projects/status/hcw1rfsfb6ph2hhc)](https://ci.appveyor.com/project/stevenvachon/nopter) [![Dependency Status](https://david-dm.org/stevenvachon/nopter.svg)](https://david-dm.org/stevenvachon/nopter)
 
 > A simple nopt wrapper for CLI apps.
 
 If you don't need a crazy custom CLI app, get it done in no time with **nopter**.
 
 Features:
-* Easy syntax
+* Easy (declarative) syntax
 * Argument aliases
-* Built-in help screen
+* Integrated help screen
 
 ![Compile example](https://raw.github.com/stevenvachon/nopter/master/misc/help-screen.png)
 
@@ -29,7 +29,7 @@ Gets a (red) colored error message with a default "Error" prefix, but does not d
 nopter.error.fatal(error, additional, prefix);
 ```
 `error` can be `Error` or `String`. If an `Error`, `error.name` will override the default `prefix`.  
-`additional` [optional] is a second uncolored sentence.  
+`additional` [optional] is a second, uncolored sentence.  
 `prefix` [optional] overrides the default.
 
 #### error.notice
@@ -83,27 +83,20 @@ Default value: `{}`
 The command line options.
 ```js
 options: {
-	"help": {
-		short: ["h","?"],
-		info: "Display this help text.",
-		type: Boolean
-	},
-	"path": {
-		short: "p",
-		info: "Some file/directory.",
-		type: require("path"),
-		default: "/path/to/file",
-		hidden: true
+	"option-name": {
+		short: "o",
+		info: "Description of option.",
+		type: String
 	}
 }
 ```
-`options.default` is optional and can be anything. Undefined options are simply `undefined`.  
-`options.hidden` is an optional `Boolean` that hides the option in the help screen.  
-`options.info` is required and should be a `String`.  
-`options.rename` is an optional `String` that renames the option for easier use.  
-`options.short` is optional and can be a `String` or an `Array`.  
-`options.sort` is an optional `String` for visual grouping on the help screen.  
-`options.type` is required and can be any of [these types](https://github.com/npm/nopt#types).
+`option.default` is optional and can be anything. Undefined options are simply `undefined`.  
+`option.hidden` is an optional `Boolean` that hides the option in the help screen.  
+`option.info` is required and should be a `String`.  
+`option.rename` is an optional `String` that renames the option for easier use.  
+`option.short` is optional and can be a `String` or an `Array`.  
+`option.sort` is an optional `String` for visual grouping on the help screen.  
+`option.type` is required and can be any of [these types](https://github.com/npm/nopt#types).
 
 #### config.aliases
 Type: `Array`  
@@ -140,14 +133,15 @@ nopter.config({
 			type: path
 		},
 		"quality": {
-			info: "Image compression (0–100, default=80).",
+			info: "Some compression (0–100, default=80).",
 			type: Number,
 			default: 80
 		},
 		"special-cli": {
 			rename: "specialCLI",
-			info: "Does something special.",
-			type: String
+			info: "Do something special.",
+			type: String,
+			hidden: true
 		}
 	},
 	aliases: ["input", "output"]
@@ -166,10 +160,11 @@ module.exports = cli;
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Release History
-* 0.1.5 added sort option
-* 0.1.4 added rename option
-* 0.1.3 added hidden options
-* 0.1.2 added default values, help screen cleanup
+* 0.1.6 tested on Windows
+* 0.1.5 added `option.sort`
+* 0.1.4 added `option.rename`
+* 0.1.3 added `option.hidden`
+* 0.1.2 added `option.default`, help screen cleanup
 * 0.1.1 added custom error messages
 * 0.1.0 initial release
 

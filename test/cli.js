@@ -14,8 +14,8 @@ describe("Command line app", function()
 			{
 				var result = JSON.parse(stdout);
 				
-				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
-				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
+				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );
 				
 				done();
 			});
@@ -29,8 +29,8 @@ describe("Command line app", function()
 			{
 				var result = JSON.parse(stdout);
 				
-				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
-				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
+				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );
 				
 				done();
 			});
@@ -59,8 +59,8 @@ describe("Command line app", function()
 			{
 				var result = JSON.parse(stdout);
 				
-				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
-				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");
+				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
+				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );
 				
 				done();
 			});
@@ -74,8 +74,8 @@ describe("Command line app", function()
 			{
 				/*var result = JSON.parse(stdout);
 				
-				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
-				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");*/
+				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
+				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );*/
 				
 				done();
 			});
@@ -89,8 +89,8 @@ describe("Command line app", function()
 			{
 				/*var result = JSON.parse(stdout);
 				
-				expect( util.stripCwd(result.input)  ).to.equal("folder/file.ext");
-				expect( util.stripCwd(result.output) ).to.equal("folder/file.ext");*/
+				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
+				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );*/
 				
 				done();
 			});
@@ -109,7 +109,7 @@ describe("Command line app", function()
 					result.inputs[i] = util.stripCwd(value);
 				});
 				
-				expect(result.inputs).to.deep.equal( ["folder/file.ext","folder/file.ext"] );
+				expect(result.inputs).to.deep.equal( [util.slashes("folder/file.ext"),util.slashes("folder/file.ext")] );
 				
 				done();
 			});
@@ -167,7 +167,7 @@ describe("Command line app", function()
 				
 				console.log(stdout)
 				
-				//expect(stdout).to.equal("folder/file.ext");
+				//expect(stdout).to.equal( util.slashes("folder/file.ext") );
 				
 				done();
 			});
