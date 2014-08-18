@@ -1,21 +1,20 @@
 Test App: Testing nopter. (v0.0.0)
 
-Usage
-  testapp [OPTIONS] [ARGS]
+{{underline}}Usage{{/underline}}
+  {{bold}}{{cyan}}testapp{{/cyan}} {{magenta}}[OPTIONS]{{/magenta}} {{yellow}}[ARGS]{{/yellow}}{{/bold}}
                     
-Options             
-  --input, -i        Some input file.           
-  --inputs           Some input files.          
-  --output, -o       Some output file.          
-  --testpath, -p     For testing.               
-  --testurl, -u      For testing.               
+{{underline}}Options{{/underline}}             
+  --{{magenta}}input{{/magenta}}, -{{magenta}}i{{/magenta}}        Some input file.           
+  --{{magenta}}inputs{{/magenta}}           Some input files.          
+  --{{magenta}}output{{/magenta}}, -{{magenta}}o{{/magenta}}       Some output file.          
+  --{{magenta}}testpath{{/magenta}}, -{{magenta}}p{{/magenta}}     For testing.               
+  --{{magenta}}testurl{{/magenta}}, -{{magenta}}u{{/magenta}}      For testing.               
                     
-Options (Toggles)   
-  --help, -h, -?     Display this help text.    
-  --minify-abbr, -m  Some minifier.             
-  --version, -v      Print the testapp version. 
+{{underline}}Options (toggles){{/underline}}   
+  --{{magenta}}help{{/magenta}}, -{{magenta}}h{{/magenta}}, -{{magenta}}?{{/magenta}}     Display this help text.    
+  --{{magenta}}minify-abbr{{/magenta}}, -{{magenta}}m{{/magenta}}  Some minifier.             
+  --{{magenta}}version{{/magenta}}, -{{magenta}}v{{/magenta}}      Print the testapp version. 
                     
-Arguments           
-  INPUT              Alias to --input           
-  OUTPUT             Alias to --output          
-
+{{underline}}Arguments{{/underline}}           
+  {{yellow}}INPUT{{/yellow}}              Alias to --input           
+  {{yellow}}OUTPUT{{/yellow}}             Alias to --output          

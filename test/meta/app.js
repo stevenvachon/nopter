@@ -12,6 +12,7 @@ nopter.config(
 	name:        pkg.name,
 	description: pkg.description,
 	version:     pkg.version,
+	colors:      ["cyan","magenta","yellow"],
 	options:
 	{
 		"help":
@@ -19,7 +20,7 @@ nopter.config(
 			short: ["h","?"],
 			info: "Display this help text.",
 			type: Boolean,
-			sort: "Toggles"
+			sort: "toggles"
 		},
 		"hidden":
 		{
@@ -44,7 +45,7 @@ nopter.config(
 			short: "m",
 			info: "Some minifier.",
 			type: Boolean,
-			sort: "Toggles"
+			sort: "toggles"
 		},
 		"output":
 		{
@@ -70,7 +71,7 @@ nopter.config(
 			short: "v",
 			info: "Print the "+pkg.name+" version.",
 			type: Boolean,
-			sort: "Toggles"
+			sort: "toggles"
 		}
 	},
 	aliases: ["input", "output"]
@@ -82,7 +83,7 @@ function cli()
 {
 	if (nopter.input().help)
 	{
-		console.log( nopter.help() );
+		process.stdout.write( nopter.help() );
 	}
 	/*else if (nopter.input().testpath)
 	{

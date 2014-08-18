@@ -1,6 +1,5 @@
-var expect    = require("chai").expect;
-var stripAnsi = require("strip-ansi");
-var util      = require("./util");
+var expect = require("chai").expect;
+var util   = require("./util");
 
 
 
@@ -175,12 +174,11 @@ describe("Command line app", function()
 		
 		
 		
-		it("should show help menu", function(done)
+		it("should show help screen", function(done)
 		{
 			util.shell("meta/app", ["-?"], function(error, stdout, stderr)
 			{
-				var expectedStdout = util.loadFile("meta/help.txt");
-				stdout = stripAnsi(stdout);
+				var expectedStdout = util.loadHelpFile("meta/help.txt");
 				
 				expect(stdout).to.equal(expectedStdout);
 				
@@ -193,12 +191,11 @@ describe("Command line app", function()
 	
 	describe("with no meta or aliases", function()
 	{
-		it("should show help menu", function(done)
+		it("should show help screen", function(done)
 		{
 			util.shell("no-meta-no-aliases/app", ["--help"], function(error, stdout, stderr)
 			{
-				var expectedStdout = util.loadFile("no-meta-no-aliases/help.txt");
-				stdout = stripAnsi(stdout);
+				var expectedStdout = util.loadHelpFile("no-meta-no-aliases/help.txt");
 				
 				expect(stdout).to.equal(expectedStdout);
 				
@@ -231,6 +228,84 @@ describe("Command line app", function()
 			util.shell("no-config/app", ["--help"], function(error, stdout, stderr)
 			{
 				expect(error).to.not.be.null;
+				
+				done();
+			});
+		});
+	});
+	
+	
+	
+	describe("with lesser-used functions", function()
+	{
+		it("should overwrite config", function(done)
+		{
+			util.shell("lesser-used-functions/app", ["--overwrite"], function(error, stdout, stderr)
+			{
+				expect( JSON.parse(stdout).options ).to.deep.equal( {overwrite:{}} );
+				
+				done();
+			});
+		});
+		
+		
+		
+		it("should support config.merge()", function(done)
+		{
+			util.shell("lesser-used-functions/app", ["--merge"], function(error, stdout, stderr)
+			{
+				expect( JSON.parse(stdout) ).to.deep.equal("merged");
+				
+				done();
+			});
+		});
+		
+		
+		
+		it("should support indent()", function(done)
+		{
+			util.shell("lesser-used-functions/app", ["--indent"], function(error, stdout, stderr)
+			{
+				expect(stdout).to.equal("  ");
+				
+				done();
+			});
+		});
+		
+		
+		
+		it("should support disabled colors (some)", function(done)
+		{
+			util.shell("lesser-used-functions/app", ["--custom-colors1"], function(error, stdout, stderr)
+			{
+				var expectedStdout = util.loadHelpFile("lesser-used-functions/help1.txt");
+				
+				expect(stdout).to.equal(expectedStdout);
+				
+				done();
+			});
+		});
+		
+		
+		it("should support disabled colors (all)", function(done)
+		{
+			util.shell("lesser-used-functions/app", ["--custom-colors2"], function(error, stdout, stderr)
+			{
+				var expectedStdout = util.loadHelpFile("lesser-used-functions/help2.txt");
+				
+				expect(stdout).to.equal(expectedStdout);
+				
+				done();
+			});
+		});
+		
+		it("should support disabled colors (all #2)", function(done)
+		{
+			util.shell("lesser-used-functions/app", ["--custom-colors3"], function(error, stdout, stderr)
+			{
+				var expectedStdout = util.loadHelpFile("lesser-used-functions/help2.txt");
+				
+				expect(stdout).to.equal(expectedStdout);
 				
 				done();
 			});

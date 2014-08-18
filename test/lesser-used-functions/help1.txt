@@ -1,0 +1,12 @@
+MERGED (v0.0.0)
+
+{{underline}}Usage{{/underline}}
+  {{bold}}{{red}}merged{{/red}} [OPTIONS]{{/bold}}
+                   
+{{underline}}Options{{/underline}}            
+  --custom-colors1  Just one red.                        
+  --custom-colors2  No colors.                           
+  --custom-colors3  No colors #2.                        
+  --indent, -i      The indent used for the help screen. 
+  --merge, -m       Merge configurations.                
+  --overwrite, -o   Overwrite configuration.             

@@ -21,7 +21,7 @@ function cli()
 {
 	if (nopter.input().help)
 	{
-		console.log( nopter.help() );
+		process.stdout.write( nopter.help() );
 	}
 }
 

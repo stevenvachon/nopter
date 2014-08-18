@@ -1,8 +1,7 @@
 NONAME (v0.0.0)
 
-Usage
-  noname [OPTIONS]
+{{underline}}Usage{{/underline}}
+  {{bold}}{{red}}noname{{/red}} {{green}}[OPTIONS]{{/green}}{{/bold}}
                  
-Options          
-  --help, -h, -?  Display this help text. 
-
+{{underline}}Options{{/underline}}          
+  --{{green}}help{{/green}}, -{{green}}h{{/green}}, -{{green}}?{{/green}}  Display this help text. 

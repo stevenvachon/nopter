@@ -1,7 +1,7 @@
 {
   "name": "nopter",
   "description": "A simple nopt wrapper for CLI apps.",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "homepage": "https://github.com/stevenvachon/nopter",
   "author": {
     "name": "Steven Vachon",
@@ -19,7 +19,8 @@
   "dependencies": {
     "cli-table": "~0.3",
     "colors": "~0.6",
-    "nopt": "^3.0"
+    "nopt": "^3.0",
+    "object.assign": "^1.0"
   },
   "devDependencies": {
     "chai": "^1.9",
