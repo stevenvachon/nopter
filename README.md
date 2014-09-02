@@ -174,6 +174,7 @@ For more ideas, check out the [test file](https://github.com/stevenvachon/nopter
 ```
 
 ## Release History
+* 0.1.8 simplified color test
 * 0.1.7 added `config.colors`, `config.merge()`, `help.indent()`
 * 0.1.6 tested on Windows
 * 0.1.5 added `option.sort`
@@ -185,4 +186,4 @@ For more ideas, check out the [test file](https://github.com/stevenvachon/nopter
 
 ---
 
-[![Analytics](https://ga-beacon.appspot.com/UA-3614308-14/stevenvachon/nopter)](https://github.com/igrigorik/ga-beacon "Google Analytics") [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stevenvachon/nopter/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Analytics](https://ga-beacon.appspot.com/UA-3614308-14/stevenvachon/nopter)](https://github.com/igrigorik/ga-beacon "Google Analytics")

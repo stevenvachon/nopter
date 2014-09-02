@@ -1,7 +1,7 @@
 {
   "name": "nopter",
   "description": "A simple nopt wrapper for CLI apps.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "homepage": "https://github.com/stevenvachon/nopter",
   "author": {
     "name": "Steven Vachon",
@@ -16,9 +16,15 @@
   "bugs": {
     "url": "https://github.com/stevenvachon/nopter/issues"
   },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/mit-license.php"
+    }
+  ],
   "dependencies": {
     "cli-table": "~0.3",
-    "colors": "~0.6",
+    "colors": "^1.0",
     "nopt": "^3.0",
     "object.assign": "^1.0"
   },
