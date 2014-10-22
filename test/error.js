@@ -1,6 +1,6 @@
-var expect    = require("chai").expect;
-var nopter    = require("../lib");
-var stripAnsi = require("strip-ansi");
+var colors = require("colors");
+var expect = require("chai").expect;
+var nopter = require("../lib");
 
 
 
@@ -10,9 +10,9 @@ describe("Error messages", function()
 	{
 		it("should work", function(done)
 		{
-			var result1 = stripAnsi( nopter.error.fatal(  new Error("Description."), "Additional" ) );
-			var result2 = stripAnsi( nopter.error.notice( new Error("Description."), "Additional" ) );
-			var result3 = stripAnsi( nopter.error.warn(   new Error("Description."), "Additional" ) );
+			var result1 = colors.strip( nopter.error.fatal(  new Error("Description."), "Additional" ) );
+			var result2 = colors.strip( nopter.error.notice( new Error("Description."), "Additional" ) );
+			var result3 = colors.strip( nopter.error.warn(   new Error("Description."), "Additional" ) );
 			
 			var expected = "Error: Description. Additional";
 			
@@ -27,9 +27,9 @@ describe("Error messages", function()
 		
 		it("should support custom prefixes", function(done)
 		{
-			var result1 = stripAnsi( nopter.error.fatal(  new Error("Description."), "Additional", "Custom" ) );
-			var result2 = stripAnsi( nopter.error.notice( new Error("Description."), "Additional", "Custom" ) );
-			var result3 = stripAnsi( nopter.error.warn(   new Error("Description."), "Additional", "Custom" ) );
+			var result1 = colors.strip( nopter.error.fatal(  new Error("Description."), "Additional", "Custom" ) );
+			var result2 = colors.strip( nopter.error.notice( new Error("Description."), "Additional", "Custom" ) );
+			var result3 = colors.strip( nopter.error.warn(   new Error("Description."), "Additional", "Custom" ) );
 			
 			var expected = "Custom: Description. Additional";
 			
@@ -69,9 +69,9 @@ describe("Error messages", function()
 	{
 		it("should work", function(done)
 		{
-			var result1 = stripAnsi( nopter.error.fatal(  "Description.", "Additional" ) );
-			var result2 = stripAnsi( nopter.error.notice( "Description.", "Additional" ) );
-			var result3 = stripAnsi( nopter.error.warn(   "Description.", "Additional" ) );
+			var result1 = colors.strip( nopter.error.fatal(  "Description.", "Additional" ) );
+			var result2 = colors.strip( nopter.error.notice( "Description.", "Additional" ) );
+			var result3 = colors.strip( nopter.error.warn(   "Description.", "Additional" ) );
 			
 			var expected1 =   "Error: Description. Additional";
 			var expected2 =  "Notice: Description. Additional";
@@ -88,9 +88,9 @@ describe("Error messages", function()
 		
 		it("should support custom prefixes", function(done)
 		{
-			var result1 = stripAnsi( nopter.error.fatal(  "Description.", "Additional", "Custom" ) );
-			var result2 = stripAnsi( nopter.error.notice( "Description.", "Additional", "Custom" ) );
-			var result3 = stripAnsi( nopter.error.warn(   "Description.", "Additional", "Custom" ) );
+			var result1 = colors.strip( nopter.error.fatal(  "Description.", "Additional", "Custom" ) );
+			var result2 = colors.strip( nopter.error.notice( "Description.", "Additional", "Custom" ) );
+			var result3 = colors.strip( nopter.error.warn(   "Description.", "Additional", "Custom" ) );
 			
 			var expected = "Custom: Description. Additional";
 			

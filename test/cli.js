@@ -52,6 +52,21 @@ describe("Command line app", function()
 		
 		
 		
+		it("should support unknown options", function(done)
+		{
+			util.shell("meta/app", ["-f","--fake"], function(error, stdout, stderr)
+			{
+				var result = JSON.parse(stdout);
+				
+				expect(result.f).to.be.true;
+				expect(result.fake).to.be.true;
+				
+				done();
+			});
+		});
+		
+		
+		
 		it("should support aliased/argument options", function(done)
 		{
 			util.shell("meta/app", ["folder/file.ext", "folder/file.ext"], function(error, stdout, stderr)
@@ -176,7 +191,8 @@ describe("Command line app", function()
 		
 		it("should show help screen", function(done)
 		{
-			util.shell("meta/app", ["-?"], function(error, stdout, stderr)
+			// `--color` is a colors.js arg
+			util.shell("meta/app", ["-?","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = util.loadHelpFile("meta/help.txt");
 				
@@ -193,7 +209,8 @@ describe("Command line app", function()
 	{
 		it("should show help screen", function(done)
 		{
-			util.shell("no-meta-no-aliases/app", ["--help"], function(error, stdout, stderr)
+			// `--color` is a colors.js arg
+			util.shell("no-meta-no-aliases/app", ["--help","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = util.loadHelpFile("no-meta-no-aliases/help.txt");
 				
@@ -276,7 +293,8 @@ describe("Command line app", function()
 		
 		it("should support disabled colors (some)", function(done)
 		{
-			util.shell("lesser-used-functions/app", ["--custom-colors1"], function(error, stdout, stderr)
+			// `--color` is a colors.js arg
+			util.shell("lesser-used-functions/app", ["--custom-colors1","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = util.loadHelpFile("lesser-used-functions/help1.txt");
 				
@@ -289,7 +307,8 @@ describe("Command line app", function()
 		
 		it("should support disabled colors (all)", function(done)
 		{
-			util.shell("lesser-used-functions/app", ["--custom-colors2"], function(error, stdout, stderr)
+			// `--color` is a colors.js arg
+			util.shell("lesser-used-functions/app", ["--custom-colors2","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = util.loadHelpFile("lesser-used-functions/help2.txt");
 				
@@ -301,7 +320,8 @@ describe("Command line app", function()
 		
 		it("should support disabled colors (all #2)", function(done)
 		{
-			util.shell("lesser-used-functions/app", ["--custom-colors3"], function(error, stdout, stderr)
+			// `--color` is a colors.js arg
+			util.shell("lesser-used-functions/app", ["--custom-colors3","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = util.loadHelpFile("lesser-used-functions/help2.txt");
 				

@@ -156,7 +156,7 @@ function cli() {
 	if (nopter.input().help) {
 		console.log( nopter.help() );
 	} else {
-		console.log( nopter.error.warn("Message","Use --help") );
+		console.warn( nopter.error.warn("Message","Use --help") );
 	}
 }
 
@@ -165,6 +165,7 @@ module.exports = cli;
 For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
 
 ## Roadmap Features
+* add "safe colors", cell-span and word-wrap features to cli-table
 * add "before" and "after" (table?) content for `help()`
 * add `option.alias` shortcut:
 ```js
@@ -174,6 +175,7 @@ For more ideas, check out the [test file](https://github.com/stevenvachon/nopter
 ```
 
 ## Release History
+* 0.1.9 avoided `String.prototype` colors (for the paranoid)
 * 0.1.8 simplified color test
 * 0.1.7 added `config.colors`, `config.merge()`, `help.indent()`
 * 0.1.6 tested on Windows
