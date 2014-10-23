@@ -1,4 +1,5 @@
-var nopter = require("../../lib");
+var requireUncached = require("require-uncached");
+var nopter = requireUncached("../../lib");
 
 
 
@@ -49,39 +50,41 @@ nopter.config.merge({ name:"merged" });
 
 
 
-function cli()
+function cli(args)
 {
-	if (nopter.input().customColors1)
+	var args = nopter.input(args);
+	
+	if (args.customColors1)
 	{
 		nopter.config.merge({ colors:["red",null,null] });
 		
-		process.stdout.write( nopter.help() );
+		return nopter.help(true);
 	}
-	else if (nopter.input().customColors2)
+	else if (args.customColors2)
 	{
 		nopter.config.merge({ colors:[] });
 		
-		process.stdout.write( nopter.help() );
+		return nopter.help(true);
 	}
-	else if (nopter.input().customColors3)
+	else if (args.customColors3)
 	{
 		nopter.config.merge({ colors:null });
 		
-		process.stdout.write( nopter.help() );
+		return nopter.help(true);
 	}
-	else if (nopter.input().indent)
+	else if (args.indent)
 	{
-		process.stdout.write( nopter.help.indent() );
+		return nopter.help.indent();
 	}
-	else if (nopter.input().merge)
+	else if (args.merge)
 	{
-		console.log( JSON.stringify( nopter.config().name ) );
+		return nopter.config().name;
 	}
-	else if (nopter.input().overwrite)
+	else if (args.overwrite)
 	{
 		nopter.config({options:{ "overwrite":{type:Boolean} }});
 		
-		console.log( JSON.stringify( nopter.config() ) );
+		return nopter.config().options;
 	}
 }
 

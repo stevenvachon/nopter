@@ -1,8 +1,9 @@
-var path = require("path");
-var url  = require("url");
+var requireUncached = require("require-uncached");
 
-var nopter = require("../../lib");
-var pkg    = require("./package.json");
+var nopter = requireUncached("../../lib");
+var path = require("path");
+var pkg  = require("./package.json");
+var url  = require("url");
 
 
 
@@ -15,18 +16,17 @@ nopter.config(
 	colors:      ["cyan","magenta","yellow"],
 	options:
 	{
+		"debug":
+		{
+			info: "Debug mode for testing.",
+			hidden: true
+		},
 		"help":
 		{
 			short: ["h","?"],
 			info: "Display this help text.",
 			type: Boolean,
 			sort: "toggles"
-		},
-		"hidden":
-		{
-			short: "h",
-			info: "A hidden option.",
-			hidden: true
 		},
 		"input":
 		{
@@ -53,13 +53,13 @@ nopter.config(
 			info: "Some output file.",
 			type: path
 		},
-		"testpath":
+		"path":
 		{
 			short: "p",
 			info: "For testing.",
 			type: path
 		},
-		"testurl":
+		"url":
 		{
 			short: "u",
 			info: "For testing.",
@@ -79,19 +79,29 @@ nopter.config(
 
 
 
-function cli()
+function cli(args, showArgs)
 {
-	if (nopter.input().help)
+	var testing = !!args;
+	args = nopter.input(args);
+	
+	if (testing && showArgs)
 	{
-		process.stdout.write( nopter.help() );
+		return args;
 	}
-	/*else if (nopter.input().testpath)
+	else if (args.help)
 	{
-		console.log( nopter.rawInput().testpath );
-	}*/
-	else
+		if (testing)
+		{
+			return nopter.help(true);
+		}
+		else
+		{
+			process.stdout.write( nopter.help() );
+		}
+	}
+	else if (args.version)
 	{
-		console.log( JSON.stringify( nopter.input() ) );
+		process.stdout.write( nopter.config().version );
 	}
 }
 

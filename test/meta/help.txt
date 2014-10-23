@@ -7,8 +7,8 @@ Test App: Testing nopter. (v0.0.0)
   --{{magenta}}input{{/magenta}}, -{{magenta}}i{{/magenta}}        Some input file.           
   --{{magenta}}inputs{{/magenta}}           Some input files.          
   --{{magenta}}output{{/magenta}}, -{{magenta}}o{{/magenta}}       Some output file.          
-  --{{magenta}}testpath{{/magenta}}, -{{magenta}}p{{/magenta}}     For testing.               
-  --{{magenta}}testurl{{/magenta}}, -{{magenta}}u{{/magenta}}      For testing.               
+  --{{magenta}}path{{/magenta}}, -{{magenta}}p{{/magenta}}         For testing.               
+  --{{magenta}}url{{/magenta}}, -{{magenta}}u{{/magenta}}          For testing.               
                     
 {{underline}}Options (toggles){{/underline}}   
   --{{magenta}}help{{/magenta}}, -{{magenta}}h{{/magenta}}, -{{magenta}}?{{/magenta}}     Display this help text.    

@@ -1,12 +1,15 @@
-var nopter = require("../../lib");
+var requireUncached = require("require-uncached");
+var nopter = requireUncached("../../lib");
 
 
 
-function cli()
+function cli(args)
 {
-	if (nopter.input().help)
+	args = nopter.input(args);
+	
+	if (args.help)
 	{
-		console.log( nopter.help() );
+		return nopter.help();
 	}
 }
 

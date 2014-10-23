@@ -1,5 +1,10 @@
 var expect = require("chai").expect;
-var util   = require("./util");
+var nopter = require("../lib");
+var path = require("path");
+var requireUncached = require("require-uncached");
+var util = require("./util");
+
+var app,result;
 
 
 
@@ -7,194 +12,171 @@ describe("Command line app", function()
 {
 	describe("with meta", function()
 	{
+		beforeEach(function()
+		{
+			app = requireUncached("./meta/app.js");
+		});
+		
+		
+		
 		it("should support full-length options", function(done)
 		{
-			util.shell("meta/app", ["--input","folder/file.ext", "--output","folder/file.ext"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
-				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );
-				
-				done();
-			});
+			result = app("--input folder/file.ext --output folder/file.ext", true);
+			
+			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			
+			done();
 		});
 		
 		
 		
 		it("should support shorthand options", function(done)
 		{
-			util.shell("meta/app", ["-i","folder/file.ext", "-o","folder/file.ext"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
-				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );
-				
-				done();
-			});
+			result = app("--i folder/file.ext --o folder/file.ext", true);
+			
+			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			
+			done();
 		});
 		
 		
 		
 		it("should support renamed options", function(done)
 		{
-			util.shell("meta/app", ["-m"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect( result["--minify-abbr"] ).to.be.undefined;
-				expect(result.minifyABBR).to.be.true;
-				
-				done();
-			});
+			result = app("-m", true);
+			
+			expect( result["--minify-abbr"] ).to.be.undefined;
+			expect( result.minifyABBR ).to.be.true;
+			
+			done();
 		});
 		
 		
 		
 		it("should support unknown options", function(done)
 		{
-			util.shell("meta/app", ["-f","--fake"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect(result.f).to.be.true;
-				expect(result.fake).to.be.true;
-				
-				done();
-			});
+			result = app("-f --fake", true);
+			
+			expect(result.f).to.be.true;
+			expect(result.fake).to.be.true;
+			
+			done();
 		});
 		
 		
 		
 		it("should support aliased/argument options", function(done)
 		{
-			util.shell("meta/app", ["folder/file.ext", "folder/file.ext"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
-				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );
-				
-				done();
-			});
+			result = app("folder/file.ext folder/file.ext", true);
+			
+			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			
+			done();
 		});
 		
 		
 		
 		it.skip("should support aliased/argument options in strange order", function(done)
 		{
-			util.shell("meta/app", ["folder/file.ext", "-p","folder/file.ext", "folder/file.ext"], function(error, stdout, stderr)
-			{
-				/*var result = JSON.parse(stdout);
-				
-				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
-				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );*/
-				
-				done();
-			});
+			result = app("folder/file.ext -p folder/file.ext folder/file.ext", true);
+			
+			//expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			//expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			
+			done();
 		});
 		
 		
 		
 		it.skip("should support aliased/argument options in strange order with incorrect options", function(done)
 		{
-			util.shell("meta/app", ["folder/file.ext", "--fake","value", "folder/file.ext"], function(error, stdout, stderr)
-			{
-				/*var result = JSON.parse(stdout);
-				
-				expect( util.stripCwd(result.input)  ).to.equal( util.slashes("folder/file.ext") );
-				expect( util.stripCwd(result.output) ).to.equal( util.slashes("folder/file.ext") );*/
-				
-				done();
-			});
+			result = app("folder/file.ext --fake value folder/file.ext", true);
+			
+			//expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			//expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			
+			done();
 		});
 		
 		
 		
 		it("should support array options", function(done)
 		{
-			util.shell("meta/app", ["--inputs","folder/file.ext", "--inputs","folder/file.ext"], function(error, stdout, stderr)
+			result = app("--inputs folder/file.ext --inputs folder/file.ext", true);
+			
+			result.inputs.forEach( function(value, i)
 			{
-				var result = JSON.parse(stdout);
-				
-				result.inputs.forEach( function(value, i)
-				{
-					result.inputs[i] = util.stripCwd(value);
-				});
-				
-				expect(result.inputs).to.deep.equal( [util.slashes("folder/file.ext"),util.slashes("folder/file.ext")] );
-				
-				done();
+				result.inputs[i] = util.stripCwd(value);
 			});
+			
+			expect(result.inputs).to.deep.equal(
+			[
+				path.normalize("../folder/file.ext"),
+				path.normalize("../folder/file.ext")
+			]);
+			
+			done();
 		});
 		
 		
 		
 		it("should support default values with defined option", function(done)
 		{
-			util.shell("meta/app", ["-u"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect(result.testurl).to.equal("http://google.com/");
-				
-				done();
-			});
+			result = app("-u", true);
+			
+			expect(result.url).to.equal("http://google.com/");
+			
+			done();
 		});
 		
 		
 		
 		it("should support default values with non-defined option", function(done)
 		{
-			util.shell("meta/app", [], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect(result.testurl).to.equal("http://google.com/");
-				
-				done();
-			});
+			result = app([], true);
+			
+			expect(result.url).to.equal("http://google.com/");
+			
+			done();
 		});
 		
 		
 		
 		it("should support overriden default values", function(done)
 		{
-			util.shell("meta/app", ["-u","http://asdf.com"], function(error, stdout, stderr)
-			{
-				var result = JSON.parse(stdout);
-				
-				expect(result.testurl).to.equal("http://asdf.com/");
-				
-				done();
-			});
-		});
-		
-		
-		
-		it.skip("should support rawInput", function(done)
-		{
-			util.shell("meta/app", ["folder/file.ext", "-u","http://google.com", "folder/file.ext", "asdfasdf"], function(error, stdout, stderr)
-			{
-				if (error) throw error;
-				
-				console.log(stdout)
-				
-				//expect(stdout).to.equal( util.slashes("folder/file.ext") );
-				
-				done();
-			});
+			result = app("-u http://asdf.com", true);
+			
+			expect(result.url).to.equal("http://asdf.com/");
+			
+			done();
 		});
 		
 		
 		
 		it("should show help screen", function(done)
 		{
+			result = app("-?");
+			
+			var expectedResult = nopter.util.readHelpFile("./meta/help.txt");
+			expectedResult = nopter.util.replaceColorVars(expectedResult);
+			
+			expect(result).to.equal(expectedResult);
+			
+			done();
+		});
+		
+		
+		
+		it("should show help screen (child process)", function(done)
+		{
 			// `--color` is a colors.js arg
-			util.shell("meta/app", ["-?","--color"], function(error, stdout, stderr)
+			util.shell("./meta/app", ["-?","--color"], function(error, stdout, stderr)
 			{
-				var expectedStdout = util.loadHelpFile("meta/help.txt");
+				var expectedStdout = nopter.util.readHelpFile("./meta/help.txt");
+				expectedStdout = nopter.util.replaceColorVars(expectedStdout);
 				
 				expect(stdout).to.equal(expectedStdout);
 				
@@ -207,17 +189,23 @@ describe("Command line app", function()
 	
 	describe("with no meta or aliases", function()
 	{
+		beforeEach(function()
+		{
+			app = requireUncached("./no-meta-no-aliases/app.js");
+		});
+		
+		
+		
 		it("should show help screen", function(done)
 		{
-			// `--color` is a colors.js arg
-			util.shell("no-meta-no-aliases/app", ["--help","--color"], function(error, stdout, stderr)
-			{
-				var expectedStdout = util.loadHelpFile("no-meta-no-aliases/help.txt");
-				
-				expect(stdout).to.equal(expectedStdout);
-				
-				done();
-			});
+			result = app("--help");
+			
+			var expectedResult = nopter.util.readHelpFile("./no-meta-no-aliases/help.txt");
+			expectedResult = nopter.util.replaceColorVars(expectedResult);
+			
+			expect(result).to.equal(expectedResult);
+			
+			done();
 		});
 	});
 	
@@ -227,12 +215,18 @@ describe("Command line app", function()
 	{
 		it("should bail", function(done)
 		{
-			util.shell("no-options/app", ["--help"], function(error, stdout, stderr)
+			try
 			{
-				expect(error).to.not.be.null;
-				
-				done();
-			});
+				app = requireUncached("./no-options/app.js");
+			}
+			catch (error)
+			{
+				app = error;
+			}
+			
+			expect(app).to.be.instanceOf(Error);
+			
+			done();
 		});
 	});
 	
@@ -240,14 +234,27 @@ describe("Command line app", function()
 	
 	describe("with no config", function()
 	{
+		beforeEach(function()
+		{
+			app = requireUncached("./no-config/app.js");
+		});
+		
+		
+		
 		it("should bail", function(done)
 		{
-			util.shell("no-config/app", ["--help"], function(error, stdout, stderr)
+			try
 			{
-				expect(error).to.not.be.null;
-				
-				done();
-			});
+				app("--help");
+			}
+			catch (error)
+			{
+				app = error;
+			}
+			
+			expect(app).to.be.instanceOf(Error);
+			
+			done();
 		});
 	});
 	
@@ -255,80 +262,84 @@ describe("Command line app", function()
 	
 	describe("with lesser-used functions", function()
 	{
+		beforeEach(function()
+		{
+			app = requireUncached("./lesser-used-functions/app.js");
+		});
+		
+		
+		
 		it("should overwrite config", function(done)
 		{
-			util.shell("lesser-used-functions/app", ["--overwrite"], function(error, stdout, stderr)
-			{
-				expect( JSON.parse(stdout).options ).to.deep.equal( {overwrite:{}} );
-				
-				done();
-			});
+			result = app("--overwrite");
+			
+			expect(result).to.deep.equal( {overwrite:{type:Boolean}} );
+			
+			done();
 		});
 		
 		
 		
 		it("should support config.merge()", function(done)
 		{
-			util.shell("lesser-used-functions/app", ["--merge"], function(error, stdout, stderr)
-			{
-				expect( JSON.parse(stdout) ).to.deep.equal("merged");
-				
-				done();
-			});
+			result = app("--merge");
+			
+			expect(result).to.equal("merged");
+			
+			done();
 		});
 		
 		
 		
 		it("should support indent()", function(done)
 		{
-			util.shell("lesser-used-functions/app", ["--indent"], function(error, stdout, stderr)
-			{
-				expect(stdout).to.equal("  ");
-				
-				done();
-			});
+			result = app("--indent");
+			
+			expect(result).to.equal("  ");
+			
+			done();
 		});
 		
 		
 		
 		it("should support disabled colors (some)", function(done)
 		{
-			// `--color` is a colors.js arg
-			util.shell("lesser-used-functions/app", ["--custom-colors1","--color"], function(error, stdout, stderr)
-			{
-				var expectedStdout = util.loadHelpFile("lesser-used-functions/help1.txt");
-				
-				expect(stdout).to.equal(expectedStdout);
-				
-				done();
-			});
+			result = app("--custom-colors1");
+			
+			var expectedResult = nopter.util.readHelpFile("./lesser-used-functions/help1.txt");
+			expectedResult = nopter.util.replaceColorVars(expectedResult);
+			
+			expect(result).to.equal(expectedResult);
+			
+			done();
 		});
+		
 		
 		
 		it("should support disabled colors (all)", function(done)
 		{
-			// `--color` is a colors.js arg
-			util.shell("lesser-used-functions/app", ["--custom-colors2","--color"], function(error, stdout, stderr)
-			{
-				var expectedStdout = util.loadHelpFile("lesser-used-functions/help2.txt");
-				
-				expect(stdout).to.equal(expectedStdout);
-				
-				done();
-			});
+			result = app("--custom-colors2");
+			
+			var expectedResult = nopter.util.readHelpFile("./lesser-used-functions/help2.txt");
+			expectedResult = nopter.util.replaceColorVars(expectedResult);
+			
+			expect(result).to.equal(expectedResult);
+			
+			done();
 		});
+		
+		
 		
 		it("should support disabled colors (all #2)", function(done)
 		{
-			// `--color` is a colors.js arg
-			util.shell("lesser-used-functions/app", ["--custom-colors3","--color"], function(error, stdout, stderr)
-			{
-				var expectedStdout = util.loadHelpFile("lesser-used-functions/help2.txt");
-				
-				expect(stdout).to.equal(expectedStdout);
-				
-				done();
-			});
+			result = app("--custom-colors3");
+			
+			var expectedResult = nopter.util.readHelpFile("./lesser-used-functions/help2.txt");
+			expectedResult = nopter.util.replaceColorVars(expectedResult);
+			
+			expect(result).to.equal(expectedResult);
+			
+			done();
 		});
 	});
 });
