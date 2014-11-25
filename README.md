@@ -64,8 +64,8 @@ nopter.input(["--option","value"]);
 * `slice` [optional] is a `Number`. [See nopt docs](https://www.npmjs.org/package/nopt#slicing). Unlike nopt, the default value of `2` only applies when `args===process.argv`; otherwise the default value is `0`.
 
 #### util.forceColors(value)
-Forces colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems.
-* `value` [optional] is a `Boolean`. The default value is `false`.
+Forces colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems. Due to the singleton design of the [color library](https://npmjs.org/package/colors), this value **applies to all nopter instances**. Colors are not forced by default.
+* `value` [optional] is a `Boolean`. If `undefined`, it will default to `true`.
 
 #### util.readHelpFile(filepath)
 Synchronously reads the contents of a text file and converts to LF line endings for cross-platform support. Useful in testing the output of [`help()`](#help).
@@ -205,7 +205,7 @@ function cli() {
 
 module.exports = cli;
 ```
-For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/cli.js).
+For more ideas, check out the [test fixture](https://github.com/stevenvachon/nopter/tree/master/test/meta/cli.js).
 
 ### Testing
 Testing in a child process is slow and can be annoying. Here's an alternative that extends the above example:
@@ -238,23 +238,31 @@ module.exports = cli;
 
 // test.js ::::::::::::::::::::
 
-var cli = new (require("./app-cli.js"))();
+var appCLI = require("./app-cli.js");
 var nopter = require("nopter");
 
-nopter.util.forceColors(true);
+nopter.util.forceColors();
 
-var options = cli.input("--input file1 --output file2", true);
-assert.equal(options.input, "file1");
-assert.deepEqual(options, {input:"file1", output:"file2"});
+function test1() {
+	var cli = new appCLI();
+	var options = cli.input("--input file1 --output file2", true);
+	assert.equal(options.input, "file1");
+	assert.deepEqual(options, {input:"file1", output:"file2"});
+}
 
-var helpScreen = nopter.util.readHelpFile("./help.txt");
-helpScreen = nopter.util.replaceColorVars(helpScreen);
-assert.equal( cli.input("--help"), helpScreen );
+function test2() {
+	var cli = new appCLI();
+	var helpScreen = nopter.util.readHelpFile("./help.txt");
+	helpScreen = nopter.util.replaceColorVars(helpScreen);
+	assert.equal( cli.input("--help"), helpScreen );
+}
 ```
+For more ideas, check out the [test suite](https://github.com/stevenvachon/nopter/tree/master/test/cli.js).
 
 ## Roadmap Features
 * add ~~"safe colors",~~ cell-span and word-wrap features to cli-table
 * add "before" and "after" (table?) content for `help()`
+* add `option.rename=true` for auto camel-casing
 * add `option.alias` shortcut:
 ```js
 "option": {
@@ -286,6 +294,7 @@ commands: {
 * add `util.shell()` for easier project testing?
 
 ## Release History
+* 0.2.1 fixed bug with `util.forceColors(false)`
 * 0.2.0
   * added `input(args)`, `util.forceColors()`, `util.readHelpFile()`, `util.replaceColorVars()`, `util.stripColors()` for easier project testing
   * added support for multiple instances (no singleton)

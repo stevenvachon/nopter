@@ -1,7 +1,7 @@
 {
   "name": "nopter",
   "description": "A powerful, yet simple command line (CLI) option parser.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/stevenvachon/nopter",
   "author": {
     "name": "Steven Vachon",
