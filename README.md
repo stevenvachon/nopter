@@ -45,12 +45,8 @@ See [error.fatal](#errorfatal) for arguments info.
 Gets a (yellow) colored error message with a default `"Warning"` prefix, but does not display/log it.
 See [error.fatal](#errorfatal) for arguments info.
 
-#### error.forceColors
-Forces colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems. The default value is `false`.
-
-#### help(forceColors)
+#### help()
 Gets the help screen, but does not display/log it.
-* `forceColors` [optional] is a `Boolean` for forcing colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems. The default value is `false`.
 
 #### help.indent()
 Gets the indent value for custom additions to the help screen.
@@ -66,6 +62,10 @@ nopter.input(["--option","value"]);
 ```
 * `args` [optional] can be an `Array` or `String`. Default value is `process.argv`.
 * `slice` [optional] is a `Number`. [See nopt docs](https://www.npmjs.org/package/nopt#slicing). Unlike nopt, the default value of `2` only applies when `args===process.argv`; otherwise the default value is `0`.
+
+#### util.forceColors(value)
+Forces colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems.
+* `value` [optional] is a `Boolean`. The default value is `false`.
 
 #### util.readHelpFile(filepath)
 Synchronously reads the contents of a text file and converts to LF line endings for cross-platform support. Useful in testing the output of [`help()`](#help).
@@ -155,13 +155,13 @@ This would allow something like `app foo bar` to be a CLI shortcut to `app --opt
 var app    = require("./app.js");
 var nopter = require("nopter");
 var path   = require("path");
-var pkg    = require("./package.json");
 
+nopter = new nopter();
 nopter.config({
-	title:       "Test App",
-	name:        pkg.name,
-	description: pkg.description,
-	version:     pkg.version,
+	title: "Test App",
+	name: "testapp",
+	description: "Testing nopter.",
+	version: "1.0.0",
 	options: {
 		"help": {
 			short: ["h","?"],
@@ -205,42 +205,51 @@ function cli() {
 
 module.exports = cli;
 ```
-For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/app.js).
+For more ideas, check out the [test file](https://github.com/stevenvachon/nopter/tree/master/test/meta/cli.js).
 
 ### Testing
 Testing in a child process is slow and can be annoying. Here's an alternative that extends the above example:
 ```js
 // app-cli.js ::::::::::::::::::::
 
-function cli(args, showArgs) {
+var nopter = require("nopter");
+
+function cli() {
+	this.nopter = new nopter();
+	this.nopter.config({/* See above example */});
+}
+
+cli.prototype.input = function(args, showArgs) {
 	var testing = !!args;
-	args = nopter.input(args);
+	args = this.nopter.input(args);
 	if (testing && showArgs) {
 		return args;
 	} else if (args.help) {
-		if (testing) return nopter.help(true);
-		else console.log( nopter.help() );
+		if (testing) return this.nopter.help();
+		else console.log( this.nopter.help() );
 	} else if (args.input && args.output) {
 		app(args);
 	} else {
-		console.error( nopter.error.fatal("You must specify input and output","Use --help") );
+		console.error( this.nopter.error.fatal("You must specify input and output","Use --help") );
 	}
-}
+};
 
 module.exports = cli;
 
 // test.js ::::::::::::::::::::
 
-var cli = require("./app-cli.js");
+var cli = new (require("./app-cli.js"))();
 var nopter = require("nopter");
 
-var options = cli("--input file1 --output file2", true);
+nopter.util.forceColors(true);
+
+var options = cli.input("--input file1 --output file2", true);
 assert.equal(options.input, "file1");
 assert.deepEqual(options, {input:"file1", output:"file2"});
 
 var helpScreen = nopter.util.readHelpFile("./help.txt");
 helpScreen = nopter.util.replaceColorVars(helpScreen);
-assert.equal( cli("--help"), helpScreen );
+assert.equal( cli.input("--help"), helpScreen );
 ```
 
 ## Roadmap Features
@@ -274,11 +283,12 @@ commands: {
 //$ app command input.ext output.ext
 ```
 * rename `options.aliases` to `options.arguments`?
-* allow multiple nopter instances?
 * add `util.shell()` for easier project testing?
 
 ## Release History
-* 0.2.0 added `error.forceColors`, `help(forceColors)`, `input(args)`, `util.readHelpFile()`, `util.replaceColorVars()`, `util.stripColors()` for easier project testing
+* 0.2.0
+  * added `input(args)`, `util.forceColors()`, `util.readHelpFile()`, `util.replaceColorVars()`, `util.stripColors()` for easier project testing
+  * added support for multiple instances (no singleton)
 * 0.1.9 avoided `String.prototype` colors (for the paranoid)
 * 0.1.8 simplified color test
 * 0.1.7 added `config.colors`, `config.merge()`, `help.indent()`

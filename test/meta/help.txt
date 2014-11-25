@@ -1,4 +1,4 @@
-Test App: Testing nopter. (v0.0.0)
+Test App: Testing nopter. (v1.0.0)
 
 {{underline}}Usage{{/underline}}
   {{bold}}{{cyan}}testapp{{/cyan}} {{magenta}}[OPTIONS]{{/magenta}} {{yellow}}[ARGS]{{/yellow}}{{/bold}}

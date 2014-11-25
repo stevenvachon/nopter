@@ -5,8 +5,8 @@ var nopter = require("../lib");
 
 describe("Error messages", function()
 {
-	after(function(){  nopter.error.forceColors = false });
-	before(function(){ nopter.error.forceColors = true  });
+	after(function(){  nopter.util.forceColors(false) });
+	before(function(){ nopter.util.forceColors(true)  });
 	
 	
 	

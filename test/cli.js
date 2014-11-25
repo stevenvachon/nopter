@@ -1,27 +1,31 @@
 var expect = require("chai").expect;
 var nopter = require("../lib");
-var path = require("path");
-var requireUncached = require("require-uncached");
-var util = require("./util");
+var path   = require("path");
+var util   = require("./util");
 
-var app,result;
+var cli,result;
 
 
 
 describe("Command line app", function()
 {
+	after(function(){  nopter.util.forceColors(false) });
+	before(function(){ nopter.util.forceColors(true)  });
+	
+	
+	
 	describe("with meta", function()
 	{
 		beforeEach(function()
 		{
-			app = requireUncached("./meta/app.js");
+			cli = new (require("./meta/cli.js"))();
 		});
 		
 		
 		
 		it("should support full-length options", function(done)
 		{
-			result = app("--input folder/file.ext --output folder/file.ext", true);
+			result = cli.input("--input folder/file.ext --output folder/file.ext", true);
 			
 			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
 			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
@@ -33,7 +37,7 @@ describe("Command line app", function()
 		
 		it("should support shorthand options", function(done)
 		{
-			result = app("--i folder/file.ext --o folder/file.ext", true);
+			result = cli.input("--i folder/file.ext --o folder/file.ext", true);
 			
 			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
 			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
@@ -45,7 +49,7 @@ describe("Command line app", function()
 		
 		it("should support renamed options", function(done)
 		{
-			result = app("-m", true);
+			result = cli.input("-m", true);
 			
 			expect( result["--minify-abbr"] ).to.be.undefined;
 			expect( result.minifyABBR ).to.be.true;
@@ -57,7 +61,7 @@ describe("Command line app", function()
 		
 		it("should support unknown options", function(done)
 		{
-			result = app("-f --fake", true);
+			result = cli.input("-f --fake", true);
 			
 			expect(result.f).to.be.true;
 			expect(result.fake).to.be.true;
@@ -69,7 +73,7 @@ describe("Command line app", function()
 		
 		it("should support aliased/argument options", function(done)
 		{
-			result = app("folder/file.ext folder/file.ext", true);
+			result = cli.input("folder/file.ext folder/file.ext", true);
 			
 			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
 			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
@@ -81,7 +85,7 @@ describe("Command line app", function()
 		
 		it.skip("should support aliased/argument options in strange order", function(done)
 		{
-			result = app("folder/file.ext -p folder/file.ext folder/file.ext", true);
+			result = cli.input("folder/file.ext -p folder/file.ext folder/file.ext", true);
 			
 			//expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
 			//expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
@@ -93,7 +97,7 @@ describe("Command line app", function()
 		
 		it.skip("should support aliased/argument options in strange order with incorrect options", function(done)
 		{
-			result = app("folder/file.ext --fake value folder/file.ext", true);
+			result = cli.input("folder/file.ext --fake value folder/file.ext", true);
 			
 			//expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
 			//expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
@@ -105,7 +109,7 @@ describe("Command line app", function()
 		
 		it("should support array options", function(done)
 		{
-			result = app("--inputs folder/file.ext --inputs folder/file.ext", true);
+			result = cli.input("--inputs folder/file.ext --inputs folder/file.ext", true);
 			
 			result.inputs.forEach( function(value, i)
 			{
@@ -125,7 +129,7 @@ describe("Command line app", function()
 		
 		it("should support default values with defined option", function(done)
 		{
-			result = app("-u", true);
+			result = cli.input("-u", true);
 			
 			expect(result.url).to.equal("http://google.com/");
 			
@@ -136,7 +140,7 @@ describe("Command line app", function()
 		
 		it("should support default values with non-defined option", function(done)
 		{
-			result = app([], true);
+			result = cli.input([], true);
 			
 			expect(result.url).to.equal("http://google.com/");
 			
@@ -147,7 +151,7 @@ describe("Command line app", function()
 		
 		it("should support overriden default values", function(done)
 		{
-			result = app("-u http://asdf.com", true);
+			result = cli.input("-u http://asdf.com", true);
 			
 			expect(result.url).to.equal("http://asdf.com/");
 			
@@ -158,7 +162,7 @@ describe("Command line app", function()
 		
 		it("should show help screen", function(done)
 		{
-			result = app("-?");
+			result = cli.input("-?");
 			
 			var expectedResult = nopter.util.readHelpFile("./meta/help.txt");
 			expectedResult = nopter.util.replaceColorVars(expectedResult);
@@ -173,7 +177,7 @@ describe("Command line app", function()
 		it("should show help screen (child process)", function(done)
 		{
 			// `--color` is a colors.js arg
-			util.shell("./meta/app", ["-?","--color"], function(error, stdout, stderr)
+			util.shell("./meta/cli", ["-?","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = nopter.util.readHelpFile("./meta/help.txt");
 				expectedStdout = nopter.util.replaceColorVars(expectedStdout);
@@ -191,14 +195,14 @@ describe("Command line app", function()
 	{
 		beforeEach(function()
 		{
-			app = requireUncached("./no-meta-no-aliases/app.js");
+			cli = new (require("./no-meta-no-aliases/cli.js"))();
 		});
 		
 		
 		
 		it("should show help screen", function(done)
 		{
-			result = app("--help");
+			result = cli.input("--help");
 			
 			var expectedResult = nopter.util.readHelpFile("./no-meta-no-aliases/help.txt");
 			expectedResult = nopter.util.replaceColorVars(expectedResult);
@@ -217,14 +221,14 @@ describe("Command line app", function()
 		{
 			try
 			{
-				app = requireUncached("./no-options/app.js");
+				cli = new (require("./no-options/cli.js"))();
 			}
 			catch (error)
 			{
-				app = error;
+				cli = error;
 			}
 			
-			expect(app).to.be.instanceOf(Error);
+			expect(cli).to.be.instanceOf(Error);
 			
 			done();
 		});
@@ -236,7 +240,7 @@ describe("Command line app", function()
 	{
 		beforeEach(function()
 		{
-			app = requireUncached("./no-config/app.js");
+			cli = new (require("./no-config/cli.js"))();
 		});
 		
 		
@@ -245,14 +249,14 @@ describe("Command line app", function()
 		{
 			try
 			{
-				app("--help");
+				cli.input("--help");
 			}
 			catch (error)
 			{
-				app = error;
+				cli = error;
 			}
 			
-			expect(app).to.be.instanceOf(Error);
+			expect(cli).to.be.instanceOf(Error);
 			
 			done();
 		});
@@ -264,14 +268,14 @@ describe("Command line app", function()
 	{
 		beforeEach(function()
 		{
-			app = requireUncached("./lesser-used-functions/app.js");
+			cli = new (require("./lesser-used-functions/cli.js"))();
 		});
 		
 		
 		
 		it("should overwrite config", function(done)
 		{
-			result = app("--overwrite");
+			result = cli.input("--overwrite");
 			
 			expect(result).to.deep.equal( {overwrite:{type:Boolean}} );
 			
@@ -282,7 +286,7 @@ describe("Command line app", function()
 		
 		it("should support config.merge()", function(done)
 		{
-			result = app("--merge");
+			result = cli.input("--merge");
 			
 			expect(result).to.equal("merged");
 			
@@ -293,7 +297,7 @@ describe("Command line app", function()
 		
 		it("should support indent()", function(done)
 		{
-			result = app("--indent");
+			result = cli.input("--indent");
 			
 			expect(result).to.equal("  ");
 			
@@ -304,7 +308,7 @@ describe("Command line app", function()
 		
 		it("should support disabled colors (some)", function(done)
 		{
-			result = app("--custom-colors1");
+			result = cli.input("--custom-colors1");
 			
 			var expectedResult = nopter.util.readHelpFile("./lesser-used-functions/help1.txt");
 			expectedResult = nopter.util.replaceColorVars(expectedResult);
@@ -318,7 +322,7 @@ describe("Command line app", function()
 		
 		it("should support disabled colors (all)", function(done)
 		{
-			result = app("--custom-colors2");
+			result = cli.input("--custom-colors2");
 			
 			var expectedResult = nopter.util.readHelpFile("./lesser-used-functions/help2.txt");
 			expectedResult = nopter.util.replaceColorVars(expectedResult);
@@ -332,7 +336,7 @@ describe("Command line app", function()
 		
 		it("should support disabled colors (all #2)", function(done)
 		{
-			result = app("--custom-colors3");
+			result = cli.input("--custom-colors3");
 			
 			var expectedResult = nopter.util.readHelpFile("./lesser-used-functions/help2.txt");
 			expectedResult = nopter.util.replaceColorVars(expectedResult);
