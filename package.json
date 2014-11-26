@@ -1,7 +1,7 @@
 {
   "name": "nopter",
   "description": "A powerful, yet simple command line (CLI) option parser.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "homepage": "https://github.com/stevenvachon/nopter",
   "author": {
     "name": "Steven Vachon",
@@ -24,11 +24,12 @@
   ],
   "dependencies": {
     "caller-path": "~0.1.0",
+    "camelcase": "^1.0.2",
+    "chalk": "~0.5.1",
     "cli-table": "~0.3.1",
-    "colors": "^1.0.3",
     "eol": "~0.2.0",
     "nopt": "^3.0.1",
-    "object.assign": "^1.0.1",
+    "object-assign": "^2.0.0",
     "splitargs": "~0.0.3"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 var expect = require("chai").expect;
 var nopter = require("../lib");
 var path   = require("path");
-var util   = require("./util");
+var utils  = require("./utils");
 
 var cli,result;
 
@@ -27,8 +27,8 @@ describe("Command line app", function()
 		{
 			result = cli.input("--input folder/file.ext --output folder/file.ext", true);
 			
-			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
-			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			expect( utils.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			expect( utils.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
 			
 			done();
 		});
@@ -39,8 +39,8 @@ describe("Command line app", function()
 		{
 			result = cli.input("--i folder/file.ext --o folder/file.ext", true);
 			
-			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
-			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			expect( utils.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			expect( utils.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
 			
 			done();
 		});
@@ -49,10 +49,26 @@ describe("Command line app", function()
 		
 		it("should support renamed options", function(done)
 		{
-			result = cli.input("-m", true);
+			result = cli.input("--rename-abbr --rename-bypass --rename-option", true);
 			
-			expect( result["--minify-abbr"] ).to.be.undefined;
-			expect( result.minifyABBR ).to.be.true;
+			expect( result["rename-abbr"] ).to.be.undefined;
+			expect( result["rename-bypass"] ).to.be.true;
+			expect( result["rename-option"] ).to.be.undefined;
+			expect( result.renameABBR ).to.be.true;
+			expect( result.renameBypass ).to.be.undefined;
+			expect( result.renameOption ).to.be.true;
+			
+			done();
+		});
+		
+		
+		
+		// Or "untyped", but that sounds like keyboard typing
+		it("should support type-less options", function(done)
+		{
+			result = cli.input("--quick", true);
+			
+			expect(result.quick).to.equal("");
 			
 			done();
 		});
@@ -75,8 +91,8 @@ describe("Command line app", function()
 		{
 			result = cli.input("folder/file.ext folder/file.ext", true);
 			
-			expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
-			expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			expect( utils.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			expect( utils.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
 			
 			done();
 		});
@@ -87,8 +103,8 @@ describe("Command line app", function()
 		{
 			result = cli.input("folder/file.ext -p folder/file.ext folder/file.ext", true);
 			
-			//expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
-			//expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			//expect( utils.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			//expect( utils.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
 			
 			done();
 		});
@@ -99,8 +115,8 @@ describe("Command line app", function()
 		{
 			result = cli.input("folder/file.ext --fake value folder/file.ext", true);
 			
-			//expect( util.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
-			//expect( util.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
+			//expect( utils.stripCwd(result.input)  ).to.equal( path.normalize("../folder/file.ext") );
+			//expect( utils.stripCwd(result.output) ).to.equal( path.normalize("../folder/file.ext") );
 			
 			done();
 		});
@@ -113,7 +129,7 @@ describe("Command line app", function()
 			
 			result.inputs.forEach( function(value, i)
 			{
-				result.inputs[i] = util.stripCwd(value);
+				result.inputs[i] = utils.stripCwd(value);
 			});
 			
 			expect(result.inputs).to.deep.equal(
@@ -176,8 +192,8 @@ describe("Command line app", function()
 		
 		it("should show help screen (child process)", function(done)
 		{
-			// `--color` is a colors.js arg
-			util.shell("./meta/cli", ["-?","--color"], function(error, stdout, stderr)
+			// `--color` is a chalk.js arg
+			utils.shell("./meta/cli", ["-?","--color"], function(error, stdout, stderr)
 			{
 				var expectedStdout = nopter.util.readHelpFile("./meta/help.txt");
 				expectedStdout = nopter.util.replaceColorVars(expectedStdout);

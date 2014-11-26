@@ -1,22 +1,103 @@
 # nopter [![NPM Version](http://badge.fury.io/js/nopter.svg)](http://badge.fury.io/js/nopter) [![Build Status](https://secure.travis-ci.org/stevenvachon/nopter.svg)](http://travis-ci.org/stevenvachon/nopter) [![Build status](https://ci.appveyor.com/api/projects/status/hcw1rfsfb6ph2hhc)](https://ci.appveyor.com/project/stevenvachon/nopter) [![Dependency Status](https://david-dm.org/stevenvachon/nopter.svg)](https://david-dm.org/stevenvachon/nopter)
 
-> A powerful, yet simple command line (CLI) option parser for Node.js
+> Easy command-line executable utilities for Node.js
 
-Built on [nopt](https://www.npmjs.org/package/nopt), NPM's option parser, this library extends functionality for a faster, clearer and more powerful workflow.
+* Easy to write
+* Easy to test
+* Easy to maintain
+* Built on [nopt](https://npmjs.org/package/nopt) (npm's option parser)
 
-Features:
-* Fast & easy declarative API ([example](#example))
-* Argument aliases, default values, renamable options and more
-* Customizable help screen:
+## Installation
 
-![Help screen](https://raw.github.com/stevenvachon/nopter/master/misc/help-screen.png)
-
-## Getting Started
-
-This utility requires [Node.js](http://nodejs.org/) `~0.10`. To install, type this at the command line:
+[Node.js](http://nodejs.org/) `~0.10` is required. Type this at the command line:
 ```shell
 npm install nopter --save-dev
 ```
+
+## Option Parsing
+Options are defined with [`config()`](#config) and serve as documentation for the help screen. The example below parses args and options from `process.argv`, leaving any remaining args not consumed by options as `input()._remain`.
+```js
+#!/usr/bin/env node
+
+var nopter = new (require("nopter"))();
+
+nopter.config({
+	title: "Image Compressor",
+	name: "imgc",
+	version: "1.0.0",
+	options: {
+		"compression": {
+			short: "c",
+			info: "Compression level (0–100, default=80).",
+			type: Number,
+			default: 80
+		},
+		"input": {
+			info: "Input image.",
+			type: require("path")
+		}
+	}
+});
+
+var args = nopter.input();
+
+if (args.compression) console.log("Compression :: "+args.compression);
+if (args.input) console.log("Input File :: "+args.input);
+if (args._remain.length) console.log("Unparsed args :: "+args._remain);
+```
+Shorthand flags may be passed as a single arg, for example `-abc` is equivalent to `-a -b -c`. Multi-word options such as "--template-engine" are camel-cased, becoming `input().templateEngine` etc. unless overridden with [`option.rename`](#configoptions).
+
+For more ideas, check out the [test fixture](https://github.com/stevenvachon/nopter/tree/master/test/meta/cli.js).
+
+## Customizable Help Screen
+![Help screen](https://raw.github.com/stevenvachon/nopter/master/misc/help-screen.png)
+Via the [`help()`](#help) function.
+
+## Testing
+```js
+// app-cli.js ::::::::::::::::::::
+
+var nopter = require("nopter");
+
+function cli() {
+	this.nopter = new nopter();
+	this.nopter.config({/* See above example */});
+}
+
+cli.prototype.input = function(args, showArgs) {
+	var testing = !!args;
+	args = this.nopter.input(args);
+	if (testing && showArgs) return args;
+	if (args.compression) console.log("Compression :: "+args.compression);
+	if (args.input) console.log("Input File :: "+args.input);
+};
+
+module.exports = cli;
+
+// test.js ::::::::::::::::::::
+
+var appCLI = require("./app-cli.js");
+var nopter = require("nopter");
+
+nopter.util.forceColors();
+
+function test1() {
+	var cli = new appCLI();
+	var options = cli.input("--input file1 --compression 100", true);
+	assert.equal(options.input, "path/to/file1");
+	assert.deepEqual(options, {compression:100, input:"path/to/file1"});
+}
+
+function test2() {
+	var cli = new appCLI();
+	var helpScreen = nopter.util.readHelpFile("./help.txt");
+	helpScreen = nopter.util.replaceColorVars(helpScreen);
+	assert.equal( cli.input("--help"), helpScreen );
+}
+```
+For more ideas, check out the [test suite](https://github.com/stevenvachon/nopter/tree/master/test/cli.js).
+
+## Documentation
 
 ### Methods
 
@@ -64,7 +145,7 @@ nopter.input(["--option","value"]);
 * `slice` [optional] is a `Number`. [See nopt docs](https://www.npmjs.org/package/nopt#slicing). Unlike nopt, the default value of `2` only applies when `args===process.argv`; otherwise the default value is `0`.
 
 #### util.forceColors(value)
-Forces colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems. Due to the singleton design of the [color library](https://npmjs.org/package/colors), this value **applies to all nopter instances**. Colors are not forced by default.
+Forces colors in situations where they would normally be disabled such as a [`child_process`](http://nodejs.org/api/child_process.html) and some CI (Continuous Integration) systems. Due to the singleton design of the [color library](https://npmjs.org/package/chalk), this value **applies to all nopter instances**. Colors are not forced by default.
 * `value` [optional] is a `Boolean`. If `undefined`, it will default to `true`.
 
 #### util.readHelpFile(filepath)
@@ -82,7 +163,7 @@ var str = "{{green}}This is a {{bold}}colored{{/bold}} sentence.{{/green}}";
 console.log( nopter.util.replaceColorVars(str) );
 //-> \u001b[32mThis is a \u001b[1mcolored\u001b[22m sentence.\u001b[39m
 ```
-* `str` is a required `String`. Possible [color variables](https://www.npmjs.org/package/colors).
+* `str` is a required `String`. Possible [color variables](https://www.npmjs.org/package/chalk).
 
 #### util.stripColors(str)
 Remove all ANSI characters. Useful in testing the output of [`help()`](#help).
@@ -98,7 +179,7 @@ console.log( nopter.util.stripColors(str) );
 #### config.colors
 Type: `Array`  
 Default value: `["red","green","magenta"]`  
-The colors used in the help screen. Possible [color values](https://www.npmjs.org/package/colors), `[null,…]` to disable a color and `null` to disable all colors.
+The colors used in the help screen. Possible [color values](https://www.npmjs.org/package/chalk), `[null,…]` to disable a color and `null` to disable all colors.
 
 #### config.description
 Type: `String`  
@@ -133,13 +214,13 @@ options: {
 	}
 }
 ```
-* `option.default` is optional and can be anything. Undefined options are simply `undefined`.
-* `option.hidden` is an optional `Boolean` that hides the option from the help screen.
-* `option.info` is required and should be a `String`.
-* `option.rename` is an optional `String` that renames the option for easier programmatic use.
-* `option.short` is optional and can be a `String` or an `Array`.
-* `option.sort` is an optional `String` for categorizing the help screen.
-* `option.type` is required and can be any of [these types](https://www.npmjs.org/package/nopt#types).
+* `option.default` can be any value that is applied when no user value has been supplied.
+* `option.hidden` is a `Boolean` that hides the option from the help screen.
+* `option.info` is a descriptive `String` used in the help screen.
+* `option.rename` can be a `String` or `Boolean`. `false` will disable auto camel-casing. The default value is `true`.
+* `option.short` can be a `String` or `Array`.
+* `option.sort` is a `String` for categorizing the help screen.
+* `option.type` can be any of [these types](https://www.npmjs.org/package/nopt#types). The default type is `String`.
 
 #### config.aliases
 Type: `Array`  
@@ -150,119 +231,9 @@ aliases: ["option1","option2"]
 ```
 This would allow something like `app foo bar` to be a CLI shortcut to `app --option1 foo --option2 bar`.
 
-### Example
-```js
-var app    = require("./app.js");
-var nopter = require("nopter");
-var path   = require("path");
-
-nopter = new nopter();
-nopter.config({
-	title: "Test App",
-	name: "testapp",
-	description: "Testing nopter.",
-	version: "1.0.0",
-	options: {
-		"help": {
-			short: ["h","?"],
-			info: "Display this help text.",
-			type: Boolean
-		},
-		"input": {
-			info: "Some input files.",
-			type: [Array,path]
-		},
-		"output": {
-			info: "Some output file.",
-			type: path
-		},
-		"quality": {
-			info: "Some compression (0–100, default=80).",
-			type: Number,
-			default: 80
-		},
-		"special-cli": {
-			rename: "specialCLI",
-			short: "s",
-			info: "Do something special.",
-			type: String,
-			hidden: true
-		}
-	},
-	aliases: ["input", "output"]
-});
-
-function cli() {
-	var args = nopter.input();
-	if (args.help) {
-		console.log( nopter.help() );
-	} else if (args.input && args.output) {
-		app(args);
-	} else {
-		console.error( nopter.error.fatal("You must specify input and output","Use --help") );
-	}
-}
-
-module.exports = cli;
-```
-For more ideas, check out the [test fixture](https://github.com/stevenvachon/nopter/tree/master/test/meta/cli.js).
-
-### Testing
-Testing in a child process is slow and can be annoying. Here's an alternative that extends the above example:
-```js
-// app-cli.js ::::::::::::::::::::
-
-var nopter = require("nopter");
-
-function cli() {
-	this.nopter = new nopter();
-	this.nopter.config({/* See above example */});
-}
-
-cli.prototype.input = function(args, showArgs) {
-	var testing = !!args;
-	args = this.nopter.input(args);
-	if (testing && showArgs) {
-		return args;
-	} else if (args.help) {
-		if (testing) return this.nopter.help();
-		else console.log( this.nopter.help() );
-	} else if (args.input && args.output) {
-		app(args);
-	} else {
-		console.error( this.nopter.error.fatal("You must specify input and output","Use --help") );
-	}
-};
-
-module.exports = cli;
-
-// test.js ::::::::::::::::::::
-
-var appCLI = require("./app-cli.js");
-var nopter = require("nopter");
-
-nopter.util.forceColors();
-
-function test1() {
-	var cli = new appCLI();
-	var options = cli.input("--input file1 --output file2", true);
-	assert.equal(options.input, "file1");
-	assert.deepEqual(options, {input:"file1", output:"file2"});
-}
-
-function test2() {
-	var cli = new appCLI();
-	var helpScreen = nopter.util.readHelpFile("./help.txt");
-	helpScreen = nopter.util.replaceColorVars(helpScreen);
-	assert.equal( cli.input("--help"), helpScreen );
-}
-```
-For more ideas, check out the [test suite](https://github.com/stevenvachon/nopter/tree/master/test/cli.js).
-
 ## Roadmap Features
 * add ~~"safe colors",~~ cell-span and word-wrap features to cli-table
 * add "before" and "after" (table?) content for `help()`
-* add `option.rename=true` for auto camel-casing
 * add `option.alias` shortcut:
 ```js
 "option": {
@@ -294,11 +265,16 @@ commands: {
 * add `util.shell()` for easier project testing?
 
 ## Release History
+* 0.3.0
+  * added option auto camel-casing; `option.rename` supports booleans
+  * added `input()._remain`
+  * `option.info` no longer requires a value
+  * `option.type` defaults to type `String`
 * 0.2.1 fixed bug with `util.forceColors(false)`
 * 0.2.0
   * added `input(args)`, `util.forceColors()`, `util.readHelpFile()`, `util.replaceColorVars()`, `util.stripColors()` for easier project testing
   * added support for multiple instances (no singleton)
-* 0.1.9 avoided `String.prototype` colors (for the paranoid)
+* 0.1.9 avoided `String.prototype` colors
 * 0.1.8 simplified color test
 * 0.1.7 added `config.colors`, `config.merge()`, `help.indent()`
 * 0.1.6 tested on Windows

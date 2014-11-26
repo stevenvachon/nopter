@@ -2,19 +2,22 @@ Test App: Testing nopter. (v1.0.0)
 
 {{underline}}Usage{{/underline}}
   {{bold}}{{cyan}}testapp{{/cyan}} {{magenta}}[OPTIONS]{{/magenta}} {{yellow}}[ARGS]{{/yellow}}{{/bold}}
-                    
-{{underline}}Options{{/underline}}             
-  --{{magenta}}input{{/magenta}}, -{{magenta}}i{{/magenta}}        Some input file.           
-  --{{magenta}}inputs{{/magenta}}           Some input files.          
-  --{{magenta}}output{{/magenta}}, -{{magenta}}o{{/magenta}}       Some output file.          
-  --{{magenta}}path{{/magenta}}, -{{magenta}}p{{/magenta}}         For testing.               
-  --{{magenta}}url{{/magenta}}, -{{magenta}}u{{/magenta}}          For testing.               
-                    
-{{underline}}Options (toggles){{/underline}}   
-  --{{magenta}}help{{/magenta}}, -{{magenta}}h{{/magenta}}, -{{magenta}}?{{/magenta}}     Display this help text.    
-  --{{magenta}}minify-abbr{{/magenta}}, -{{magenta}}m{{/magenta}}  Some minifier.             
-  --{{magenta}}version{{/magenta}}, -{{magenta}}v{{/magenta}}      Print the testapp version. 
-                    
-{{underline}}Arguments{{/underline}}           
-  {{yellow}}INPUT{{/yellow}}              Alias to --input           
-  {{yellow}}OUTPUT{{/yellow}}             Alias to --output          
+                  
+{{underline}}Options{{/underline}}           
+  --{{magenta}}input{{/magenta}}, -{{magenta}}i{{/magenta}}      Some input file.           
+  --{{magenta}}inputs{{/magenta}}         Some input files.          
+  --{{magenta}}output{{/magenta}}, -{{magenta}}o{{/magenta}}     Some output file.          
+  --{{magenta}}path{{/magenta}}, -{{magenta}}p{{/magenta}}       (no description)           
+  --{{magenta}}quick{{/magenta}}          (no description)           
+  --{{magenta}}url{{/magenta}}, -{{magenta}}u{{/magenta}}        (no description)           
+                  
+{{underline}}Options (toggles){{/underline}} 
+  --{{magenta}}help{{/magenta}}, -{{magenta}}h{{/magenta}}, -{{magenta}}?{{/magenta}}   Display this help text.    
+  --{{magenta}}rename-abbr{{/magenta}}    Custom rename.             
+  --{{magenta}}rename-bypass{{/magenta}}  Bypass rename.             
+  --{{magenta}}rename-option{{/magenta}}  Auto rename.               
+  --{{magenta}}version{{/magenta}}, -{{magenta}}v{{/magenta}}    Print the testapp version. 
+                  
+{{underline}}Arguments{{/underline}}         
+  {{yellow}}INPUT{{/yellow}}            Alias to --input           
+  {{yellow}}OUTPUT{{/yellow}}           Alias to --output          

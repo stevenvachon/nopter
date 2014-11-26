@@ -40,14 +40,6 @@ function cli()
 				info: "Some input files.",
 				type: [Array,path]
 			},
-			"minify-abbr":
-			{
-				rename: "minifyABBR",
-				short: "m",
-				info: "Some minifier.",
-				type: Boolean,
-				sort: "toggles"
-			},
 			"output":
 			{
 				short: "o",
@@ -57,13 +49,32 @@ function cli()
 			"path":
 			{
 				short: "p",
-				info: "For testing.",
 				type: path
+			},
+			"quick": {},
+			"rename-abbr":
+			{
+				rename: "renameABBR",
+				info: "Custom rename.",
+				type: Boolean,
+				sort: "toggles"
+			},
+			"rename-bypass":
+			{
+				rename: false,
+				info: "Bypass rename.",
+				type: Boolean,
+				sort: "toggles"
+			},
+			"rename-option":
+			{
+				info: "Auto rename.",
+				type: Boolean,
+				sort: "toggles"
 			},
 			"url":
 			{
 				short: "u",
-				info: "For testing.",
 				type: url,
 				default: "http://google.com"
 			},
