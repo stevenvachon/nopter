@@ -17,6 +17,12 @@ function cli()
 		colors:      ["cyan","magenta","yellow"],
 		options:
 		{
+			"array":
+			{
+				info: "A list with a default value.",
+				type: [String, Array],
+				default: ["value"]
+			},
 			"debug":
 			{
 				info: "Debug mode for testing.",
@@ -38,7 +44,7 @@ function cli()
 			"inputs":
 			{
 				info: "Some input files.",
-				type: [Array,path]
+				type: [path, Array]
 			},
 			"output":
 			{

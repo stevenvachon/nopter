@@ -1,18 +1,19 @@
-# nopter [![NPM Version](http://badge.fury.io/js/nopter.svg)](http://badge.fury.io/js/nopter) [![Build Status](https://secure.travis-ci.org/stevenvachon/nopter.svg)](http://travis-ci.org/stevenvachon/nopter) [![Build status](https://ci.appveyor.com/api/projects/status/hcw1rfsfb6ph2hhc)](https://ci.appveyor.com/project/stevenvachon/nopter) [![Dependency Status](https://david-dm.org/stevenvachon/nopter.svg)](https://david-dm.org/stevenvachon/nopter)
+# nopter [![NPM Version][npm-image]][npm-url] [![Linux Build][travis-image]][travis-url] [![Windows Build][appveyor-image]][appveyor-url] [![Dependency Status][david-image]][david-url]
 
-> Easy command-line executable utilities for Node.js
+> Easy command-line executable utilities built on [nopt](https://npmjs.org/package/nopt).
 
 * Easy to write
 * Easy to test
 * Easy to maintain
-* Built on [nopt](https://npmjs.org/package/nopt) (npm's option parser)
+
 
 ## Installation
 
-[Node.js](http://nodejs.org/) `~0.10` is required. Type this at the command line:
+[Node.js](http://nodejs.org/) `>= 0.10` is required. Type this at the command line:
 ```shell
 npm install nopter --save-dev
 ```
+
 
 ## Option Parsing
 Options are defined with [`config()`](#config) and serve as documentation for the help screen. The example below parses args and options from `process.argv`, leaving any remaining args not consumed by options as `input()._remain`.
@@ -49,9 +50,11 @@ Shorthand flags may be passed as a single arg, for example `-abc` is equivalent 
 
 For more ideas, check out the [test fixture](https://github.com/stevenvachon/nopter/tree/master/test/meta/cli.js).
 
+
 ## Customizable Help Screen
 ![Help screen](https://raw.github.com/stevenvachon/nopter/master/misc/help-screen.png)
 Via the [`help()`](#help) function.
+
 
 ## Testing
 ```js
@@ -97,7 +100,9 @@ function test2() {
 ```
 For more ideas, check out the [test suite](https://github.com/stevenvachon/nopter/tree/master/test/cli.js).
 
+
 ## Documentation
+
 
 ### Methods
 
@@ -174,6 +179,7 @@ console.log( nopter.util.stripColors(str) );
 ```
 * `str` is a required `String`.
 
+
 ### Configuration
 
 #### config.colors
@@ -231,6 +237,7 @@ aliases: ["option1","option2"]
 ```
 This would allow something like `app foo bar` to be a CLI shortcut to `app --option1 foo --option2 bar`.
 
+
 ## Roadmap Features
 * add ~~"safe colors",~~ cell-span and word-wrap features to cli-table
 * add "before" and "after" (table?) content for `help()`
@@ -264,6 +271,7 @@ commands: {
 * rename `options.aliases` to `options.arguments`?
 * add `util.shell()` for easier project testing?
 
+
 ## Release History
 * 0.3.0
   * added option auto camel-casing; `option.rename` supports booleans
@@ -285,6 +293,12 @@ commands: {
 * 0.1.1 added custom error messages
 * 0.1.0 initial release
 
----
 
-[![Analytics](https://ga-beacon.appspot.com/UA-3614308-14/stevenvachon/nopter)](https://github.com/igrigorik/ga-beacon "Google Analytics")
+[npm-image]: https://img.shields.io/npm/v/nopter.svg
+[npm-url]: https://npmjs.org/package/nopter
+[travis-image]: https://img.shields.io/travis/stevenvachon/nopter.svg?label=linux
+[travis-url]: https://travis-ci.org/stevenvachon/nopter
+[appveyor-image]: https://img.shields.io/appveyor/ci/stevenvachon/nopter.svg?label=windows
+[appveyor-url]: https://ci.appveyor.com/project/stevenvachon/nopter
+[david-image]: https://img.shields.io/david/stevenvachon/nopter.svg
+[david-url]: https://david-dm.org/stevenvachon/nopter

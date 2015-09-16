@@ -1,7 +1,8 @@
 {
   "name": "nopter",
-  "description": "A powerful, yet simple command line (CLI) option parser.",
+  "description": "Easy command-line executable utilities built on nopt.",
   "version": "0.3.0",
+  "license": "MIT",
   "homepage": "https://github.com/stevenvachon/nopter",
   "author": {
     "name": "Steven Vachon",
@@ -16,25 +17,19 @@
   "bugs": {
     "url": "https://github.com/stevenvachon/nopter/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/mit-license.php"
-    }
-  ],
   "dependencies": {
     "caller-path": "~0.1.0",
-    "camelcase": "^1.0.2",
-    "chalk": "~0.5.1",
+    "camelcase": "^1.2.1",
+    "chalk": "^1.1.1",
     "cli-table": "~0.3.1",
     "eol": "~0.2.0",
-    "nopt": "^3.0.1",
-    "object-assign": "^2.0.0",
+    "nopt": "^3.0.4",
+    "object-assign": "^4.0.1",
     "splitargs": "~0.0.3"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "mocha": "^2.0.1"
+    "chai": "^3.2.0",
+    "mocha": "^2.3.2"
   },
   "engines": {
     "node": ">= 0.10"
@@ -43,7 +38,8 @@
     "test": "mocha test/ --reporter spec --check-leaks --bail --no-exit"
   },
   "files": [
-    "lib"
+    "lib",
+    "license"
   ],
   "keywords": [
     "args",

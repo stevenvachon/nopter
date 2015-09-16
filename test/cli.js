@@ -362,4 +362,20 @@ describe("Command line app", function()
 			done();
 		});
 	});
+	
+	
+	
+	describe("edge cases", function()
+	{
+		it.skip("should support default Array values", function(done)
+		{
+			cli = new (require("./meta/cli.js"))();
+			
+			result = cli.input([], true);
+			
+			expect(result.array).to.deep.equal([]);
+			
+			done();
+		});
+	});
 });
